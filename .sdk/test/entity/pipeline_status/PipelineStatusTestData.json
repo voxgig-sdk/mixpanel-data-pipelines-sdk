@@ -1,0 +1,241 @@
+{
+  "existing": {
+    "pipeline_status": {
+      "PIPELINE_STATUS00": {
+        "canceled": [],
+        "retried": [],
+        "succeeded": []
+      },
+      "PIPELINE_STATUS01": {
+        "canceled": [],
+        "retried": [],
+        "succeeded": []
+      },
+      "PIPELINE_STATUS02": {
+        "canceled": [],
+        "retried": [],
+        "succeeded": []
+      }
+    }
+  },
+  "new": {
+    "pipeline_status": {
+      "pipeline_status_ref01": {
+        "canceled": [],
+        "retried": [],
+        "succeeded": []
+      }
+    }
+  },
+  "requests": {
+    "GET /nessie/pipeline/status": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "get-warehouse-pipeline-status",
+        "parameters": [
+          {
+            "description": "Required if using service account to authenticate request.",
+            "in": "query",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The name that uniquely identifies the pipeline.",
+            "in": "query",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Default: `false`. Only lists task count by status and no details.",
+            "in": "query",
+            "name": "summary",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filters the tasks by the given status. Valid options for status are `pending`, `running`, `retried`, `failed`, `canceled`, and `timed_out`.\n",
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        ],
+        "protocol": "http",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "canceled": {
+                      "items": {
+                        "properties": {
+                          "from_date": {
+                            "type": "string"
+                          },
+                          "last_finish": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "project_id": {
+                            "description": "Your project id (must be specified when using service account based authentication)",
+                            "type": "number"
+                          },
+                          "run_at": {
+                            "type": "string"
+                          },
+                          "state": {
+                            "type": "string"
+                          },
+                          "to_date": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "retried": {
+                      "items": {
+                        "properties": {
+                          "from_date": {
+                            "type": "string"
+                          },
+                          "last_finish": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "project_id": {
+                            "description": "Your project id (must be specified when using service account based authentication)",
+                            "type": "number"
+                          },
+                          "run_at": {
+                            "type": "string"
+                          },
+                          "state": {
+                            "type": "string"
+                          },
+                          "to_date": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "succeeded": {
+                      "items": {
+                        "properties": {
+                          "from_date": {
+                            "$ref": "#/responses/200/content/application~1json/schema/properties/retried/items/properties/from_date"
+                          },
+                          "last_finish": {
+                            "$ref": "#/responses/200/content/application~1json/schema/properties/retried/items/properties/last_finish"
+                          },
+                          "name": {
+                            "$ref": "#/responses/200/content/application~1json/schema/properties/retried/items/properties/name"
+                          },
+                          "project_id": {
+                            "$ref": "#/responses/200/content/application~1json/schema/properties/retried/items/properties/project_id"
+                          },
+                          "run_at": {
+                            "$ref": "#/responses/200/content/application~1json/schema/properties/retried/items/properties/run_at"
+                          },
+                          "state": {
+                            "$ref": "#/responses/200/content/application~1json/schema/properties/retried/items/properties/state"
+                          },
+                          "to_date": {
+                            "$ref": "#/responses/200/content/application~1json/schema/properties/retried/items/properties/to_date"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "error"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "$ref": "#/responses/401/content/application~1json/schema/properties"
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "ServiceAccount": []
+          },
+          {
+            "ProjectSecret": []
+          }
+        ],
+        "securitySchemes": {
+          "OAuthToken": {
+            "description": "OAuth Token",
+            "scheme": "bearer",
+            "type": "http"
+          },
+          "ProjectSecret": {
+            "description": "Project Secret",
+            "scheme": "basic",
+            "type": "http"
+          },
+          "ServiceAccount": {
+            "description": "Service Account",
+            "scheme": "basic",
+            "type": "http"
+          }
+        },
+        "securitySource": "definition"
+      }
+    }
+  }
+}

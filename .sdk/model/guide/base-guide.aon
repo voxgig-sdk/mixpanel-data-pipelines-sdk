@@ -1,0 +1,53 @@
+# Guide
+
+guide: {
+  metrics: count: entity: 7
+  metrics: count: path: 8
+  metrics: count: method: 8
+
+  entity: create: {
+    path: "/nessie/pipeline/create": {
+      op: create: method: *POST
+    }
+  }
+
+  entity: delete_pipeline: {
+    path: "/nessie/pipeline/cancel": {
+      op: create: method: *POST
+    }
+  }
+
+  entity: edit: {
+    path: "/nessie/pipeline/edit": {
+      op: create: method: *POST
+    }
+  }
+
+  entity: pause: {
+    path: "/nessie/pipeline/pause": {
+      op: create: method: *POST
+    }
+  }
+
+  entity: pipeline_status: {
+    path: "/nessie/pipeline/status": {
+      op: list: method: *GET
+    }
+  }
+
+  entity: resume: {
+    path: "/nessie/pipeline/resume": {
+      op: create: method: *POST
+    }
+  }
+
+  entity: retrieve_pipeline: {
+    path: "/nessie/pipeline/jobs": {
+      op: load: method: *GET
+    }
+    path: "/nessie/pipeline/timeline": {
+      op: load: method: *GET
+    }
+  }
+
+}

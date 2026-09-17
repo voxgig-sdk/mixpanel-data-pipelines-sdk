@@ -1,0 +1,18 @@
+# BasicCreateFlow
+
+main: kit: flow: BasicCreateFlow:
+{
+  entity: "create",
+  kind: "basic",
+  name: "BasicCreateFlow",
+  step: [
+    {
+      input: {
+        ref: "create_ref01"
+      }
+
+      op: "create"
+    }
+  ],
+  "key$": "BasicCreateFlow"
+}

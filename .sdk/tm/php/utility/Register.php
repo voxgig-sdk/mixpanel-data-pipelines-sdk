@@ -1,0 +1,70 @@
+<?php
+declare(strict_types=1);
+
+// MixpanelDataPipelines SDK utility registration
+
+require_once __DIR__ . '/../core/UtilityType.php';
+require_once __DIR__ . '/Clean.php';
+require_once __DIR__ . '/Done.php';
+require_once __DIR__ . '/MakeError.php';
+require_once __DIR__ . '/FeatureAdd.php';
+require_once __DIR__ . '/FeatureHook.php';
+require_once __DIR__ . '/FeatureInit.php';
+require_once __DIR__ . '/Fetcher.php';
+require_once __DIR__ . '/MakeFetchDef.php';
+require_once __DIR__ . '/MakeContext.php';
+require_once __DIR__ . '/MakeOptions.php';
+require_once __DIR__ . '/MakeRequest.php';
+require_once __DIR__ . '/MakeResponse.php';
+require_once __DIR__ . '/MakeResult.php';
+require_once __DIR__ . '/MakePoint.php';
+require_once __DIR__ . '/MakeSpec.php';
+require_once __DIR__ . '/MakeUrl.php';
+require_once __DIR__ . '/Param.php';
+require_once __DIR__ . '/PrepareAuth.php';
+require_once __DIR__ . '/PrepareBody.php';
+require_once __DIR__ . '/Graphql.php';
+require_once __DIR__ . '/PrepareHeaders.php';
+require_once __DIR__ . '/PrepareMethod.php';
+require_once __DIR__ . '/PrepareParams.php';
+require_once __DIR__ . '/PreparePath.php';
+require_once __DIR__ . '/PrepareQuery.php';
+require_once __DIR__ . '/ResultBasic.php';
+require_once __DIR__ . '/ResultBody.php';
+require_once __DIR__ . '/ResultHeaders.php';
+require_once __DIR__ . '/TransformRequest.php';
+require_once __DIR__ . '/TransformResponse.php';
+
+MixpanelDataPipelinesUtility::setRegistrar(function (MixpanelDataPipelinesUtility $u): void {
+    $u->clean = [MixpanelDataPipelinesClean::class, 'call'];
+    $u->done = [MixpanelDataPipelinesDone::class, 'call'];
+    $u->make_error = [MixpanelDataPipelinesMakeError::class, 'call'];
+    $u->feature_add = [MixpanelDataPipelinesFeatureAdd::class, 'call'];
+    $u->feature_hook = [MixpanelDataPipelinesFeatureHook::class, 'call'];
+    $u->feature_init = [MixpanelDataPipelinesFeatureInit::class, 'call'];
+    $u->fetcher = [MixpanelDataPipelinesFetcher::class, 'call'];
+    $u->make_fetch_def = [MixpanelDataPipelinesMakeFetchDef::class, 'call'];
+    $u->make_context = [MixpanelDataPipelinesMakeContext::class, 'call'];
+    $u->make_options = [MixpanelDataPipelinesMakeOptions::class, 'call'];
+    $u->make_request = [MixpanelDataPipelinesMakeRequest::class, 'call'];
+    $u->make_response = [MixpanelDataPipelinesMakeResponse::class, 'call'];
+    $u->make_result = [MixpanelDataPipelinesMakeResult::class, 'call'];
+    $u->make_point = [MixpanelDataPipelinesMakePoint::class, 'call'];
+    $u->make_spec = [MixpanelDataPipelinesMakeSpec::class, 'call'];
+    $u->make_url = [MixpanelDataPipelinesMakeUrl::class, 'call'];
+    $u->param = [MixpanelDataPipelinesParam::class, 'call'];
+    $u->prepare_auth = [MixpanelDataPipelinesPrepareAuth::class, 'call'];
+    $u->prepare_body = [MixpanelDataPipelinesPrepareBody::class, 'call'];
+    $u->prepare_headers = [MixpanelDataPipelinesPrepareHeaders::class, 'call'];
+    $u->prepare_method = [MixpanelDataPipelinesPrepareMethod::class, 'call'];
+    $u->prepare_params = [MixpanelDataPipelinesPrepareParams::class, 'call'];
+    $u->prepare_path = [MixpanelDataPipelinesPreparePath::class, 'call'];
+    $u->prepare_query = [MixpanelDataPipelinesPrepareQuery::class, 'call'];
+    $u->graphql_body = [MixpanelDataPipelinesGraphql::class, 'body'];
+    $u->graphql_errors = [MixpanelDataPipelinesGraphql::class, 'errors'];
+    $u->result_basic = [MixpanelDataPipelinesResultBasic::class, 'call'];
+    $u->result_body = [MixpanelDataPipelinesResultBody::class, 'call'];
+    $u->result_headers = [MixpanelDataPipelinesResultHeaders::class, 'call'];
+    $u->transform_request = [MixpanelDataPipelinesTransformRequest::class, 'call'];
+    $u->transform_response = [MixpanelDataPipelinesTransformResponse::class, 'call'];
+});

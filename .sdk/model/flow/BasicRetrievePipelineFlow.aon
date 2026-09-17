@@ -1,0 +1,28 @@
+# BasicRetrievePipelineFlow
+
+main: kit: flow: BasicRetrievePipelineFlow:
+{
+  entity: "retrieve_pipeline",
+  kind: "basic",
+  name: "BasicRetrievePipelineFlow",
+  step: [
+    {
+      input: {
+        ref: "retrieve_pipeline_ref01",
+        srcdatavar: "retrieve_pipeline_ref01_data",
+        suffix: "_dt0"
+      }
+
+      op: "load",
+      valid: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-retrieve_pipeline_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicRetrievePipelineFlow"
+}

@@ -1,0 +1,22 @@
+# BasicPipelineStatusFlow
+
+main: kit: flow: BasicPipelineStatusFlow:
+{
+  entity: "pipeline_status",
+  kind: "basic",
+  name: "BasicPipelineStatusFlow",
+  step: [
+    {
+      op: "list",
+      valid: [
+        {
+          apply: "ItemExists",
+          def: {
+            ref: "pipeline_status_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicPipelineStatusFlow"
+}

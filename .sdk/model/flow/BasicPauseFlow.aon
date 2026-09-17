@@ -1,0 +1,18 @@
+# BasicPauseFlow
+
+main: kit: flow: BasicPauseFlow:
+{
+  entity: "pause",
+  kind: "basic",
+  name: "BasicPauseFlow",
+  step: [
+    {
+      input: {
+        ref: "pause_ref01"
+      }
+
+      op: "create"
+    }
+  ],
+  "key$": "BasicPauseFlow"
+}

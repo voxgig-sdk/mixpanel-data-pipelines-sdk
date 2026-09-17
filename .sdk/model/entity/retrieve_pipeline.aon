@@ -1,0 +1,121 @@
+# Entity: retrieve_pipeline
+
+main: kit: entity: retrieve_pipeline: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "9876543210"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "day_syncs"
+      req: false
+      type: "`$ARRAY`"
+    }
+  ]
+
+  name: "retrieve_pipeline"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "name"
+                orig: "name"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "project_id"
+                orig: "project_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          contract: {
+            id: "GET /nessie/pipeline/timeline"
+            json: "{\"operationId\":\"list-warehouse-pipeline-sync-dates\",\"parameters\":[{\"description\":\"Required if using service account to authenticate request.\",\"in\":\"query\",\"name\":\"project_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}},{\"description\":\"The name that uniquely identifies the pipeline.\",\"in\":\"query\",\"name\":\"name\",\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"example\":{\"value\":{\"day_syncs\":[{\"date\":\"2019-08-19\",\"status\":\"synced\",\"sync_times\":[\"2019-08-19 14:27:46.044605 -0700 PDT\"]},{\"date\":\"2019-08-20\",\"status\":\"synced\",\"sync_times\":[\" 2019-08-20 14:33:09.315098 -0700 PDT\"]}]}}}}},\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"type\":\"string\"},\"status\":{\"enum\":[\"error\"],\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"$ref\":\"#/responses/401/content/application~1json/schema/properties\"},\"type\":\"object\"}}},\"description\":\"Forbidden\"}},\"security\":[{\"ServiceAccount\":[]},{\"ProjectSecret\":[]}],\"securitySchemes\":{\"OAuthToken\":{\"description\":\"OAuth Token\",\"scheme\":\"bearer\",\"type\":\"http\"},\"ProjectSecret\":{\"description\":\"Project Secret\",\"scheme\":\"basic\",\"type\":\"http\"},\"ServiceAccount\":{\"description\":\"Service Account\",\"scheme\":\"basic\",\"type\":\"http\"}},\"securitySource\":\"definition\"}"
+            source: "openapi3"
+            version: 1
+          }
+          method: "GET"
+          orig: "/nessie/pipeline/timeline"
+          segments: [
+            {
+              lit: "nessie"
+            }
+            {
+              lit: "pipeline"
+            }
+            {
+              lit: "timeline"
+            }
+          ]
+          select: {
+            exist: [
+              "name"
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "project_id"
+                orig: "project_id"
+                reqd: true
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          contract: {
+            id: "GET /nessie/pipeline/jobs"
+            json: "{\"operationId\":\"list-warehouse-pipeline-jobs\",\"parameters\":[{\"description\":\"Required if using service account to authenticate request.\",\"in\":\"query\",\"name\":\"project_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"example\":{\"value\":{\"9876543210\":[{\"Dispatcher\":\"backfill\",\"frequency\":\"hourly\",\"last_dispatched\":\"2019-02-01 12:00:00 US/Pacific\",\"name\":\"events-daily-bigquery-monoschema\",\"sync_enabled\":\"true\"}]}}}}},\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"type\":\"string\"},\"status\":{\"enum\":[\"error\"],\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"$ref\":\"#/responses/401/content/application~1json/schema/properties\"},\"type\":\"object\"}}},\"description\":\"Forbidden\"}},\"security\":[{\"ServiceAccount\":[]},{\"ProjectSecret\":[]}],\"securitySchemes\":{\"OAuthToken\":{\"description\":\"OAuth Token\",\"scheme\":\"bearer\",\"type\":\"http\"},\"ProjectSecret\":{\"description\":\"Project Secret\",\"scheme\":\"basic\",\"type\":\"http\"},\"ServiceAccount\":{\"description\":\"Service Account\",\"scheme\":\"basic\",\"type\":\"http\"}},\"securitySource\":\"definition\"}"
+            source: "openapi3"
+            version: 1
+          }
+          method: "GET"
+          orig: "/nessie/pipeline/jobs"
+          segments: [
+            {
+              lit: "nessie"
+            }
+            {
+              lit: "pipeline"
+            }
+            {
+              lit: "jobs"
+            }
+          ]
+          select: {
+            exist: [
+              "project_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

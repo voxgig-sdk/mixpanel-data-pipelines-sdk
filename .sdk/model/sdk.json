@@ -1,1 +1,2299 @@
-{"name":"mixpanel-data-pipelines"}
+{
+  "NAME": "MIXPANEL-DATA-PIPELINES",
+  "Name": "MixpanelDataPipelines",
+  "def": "mixpanel-data-pipelines-openapi.yaml",
+  "main": {
+    "api": {
+      "entity": {},
+      "guide": {}
+    },
+    "custom": {
+      "plurals": {}
+    },
+    "def": {
+      "desc": ""
+    },
+    "kit": {
+      "author": {
+        "name": "",
+        "url": ""
+      },
+      "config": {
+        "docs_order": [
+          "ts",
+          "py",
+          "php",
+          "go",
+          "rb",
+          "lua"
+        ],
+        "headers": {
+          "content-type": "application/json"
+        },
+        "repr": "auto"
+      },
+      "contributor": {},
+      "doc": {
+        "active": true,
+        "assets": {
+          "path": ".sdk/doc/assets"
+        },
+        "brand": {
+          "label": "",
+          "notice": "",
+          "shortNotice": "",
+          "url": ""
+        },
+        "ci": {
+          "active": true,
+          "branch": "main"
+        },
+        "content": {
+          "path": ".sdk/doc/content"
+        },
+        "edition": {
+          "github-pages": {
+            "active": true,
+            "base": "node_modules/@voxgig/docgen/project/.sdk",
+            "brand": {},
+            "filter": {
+              "entities": [],
+              "features": [],
+              "targets": []
+            },
+            "kind": "github-pages",
+            "name": "github-pages",
+            "origname": "",
+            "output": {
+              "path": "docs"
+            },
+            "package": "@voxgig/docgen",
+            "site": {
+              "active": true
+            },
+            "style": {},
+            "title": ""
+          },
+          "summary": {
+            "active": true,
+            "base": "node_modules/@voxgig/docgen/project/.sdk",
+            "brand": {},
+            "filter": {
+              "entities": [],
+              "features": [],
+              "targets": []
+            },
+            "kind": "summary",
+            "name": "summary",
+            "origname": "",
+            "output": {
+              "path": "SUMMARY.md"
+            },
+            "package": "@voxgig/docgen",
+            "site": {
+              "active": true
+            },
+            "style": {},
+            "title": ""
+          }
+        },
+        "qa": {
+          "vocabulary": []
+        },
+        "style": {
+          "color": {
+            "accent": "#00c6d8",
+            "background": "#f5f5f9",
+            "darkBackground": "#0f1117",
+            "darkText": "#e6edf3",
+            "primary": "#e70042",
+            "text": "#0a0a0a"
+          },
+          "font": "Nunito, system-ui, sans-serif",
+          "fontFile": "",
+          "headingFont": "Nunito, system-ui, sans-serif",
+          "headingFontFile": "",
+          "logo": "",
+          "mode": "light",
+          "mono": "ui-monospace, monospace",
+          "monoFile": ""
+        },
+        "target": {}
+      },
+      "entity": {
+        "create": {
+          "active": true,
+          "alias": {
+            "field": {}
+          },
+          "fields": [
+            {
+              "active": true,
+              "name": "bigquery_dataset_name",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "pipeline_names",
+              "req": false,
+              "type": "`$ARRAY`"
+            }
+          ],
+          "name": "create",
+          "op": {
+            "create": {
+              "input": "data",
+              "name": "create",
+              "points": [
+                {
+                  "active": true,
+                  "args": {},
+                  "contract": {
+                    "id": "POST /nessie/pipeline/create",
+                    "json": "{\"operationId\":\"create-warehouse-pipeline\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/x-www-form-urlencoded\":{\"schema\":{\"discriminator\":{\"mapping\":{\"aws\":\"#/components/schemas/SchematizedAWSPipeline\",\"azure-blob\":\"#/components/schemas/SchematizedAzurePipeline\",\"azure-raw\":\"#/components/schemas/RawAzurePipeline\",\"bigquery\":\"#/components/schemas/SchematizedBigQueryPipeline\",\"gcs-raw\":\"#/components/schemas/RawGCSPipeline\",\"gcs-schema\":\"#/components/schemas/SchematizedGCSPipeline\",\"s3-raw\":\"#/components/schemas/RawAmazonS3Pipeline\",\"snowflake\":\"#/components/schemas/SchematizedSnowflakePipeline\"},\"propertyName\":\"type\"},\"oneOf\":[{\"properties\":{\"data_format\":{\"default\":\"json\",\"description\":\"**Default**: `json`\\n\\nThe file format of the exported data. **data_format** for this pipeline type can be only `json` .\\n\",\"enum\":[\"json\"],\"type\":\"string\"},\"data_source\":{\"default\":\"events\",\"description\":\"**Default**: `events`\\n\\n**data_source** In this type of pipeline it can only be `events` which exports Mixpanel event data.\\n\",\"enum\":[\"events\"],\"type\":\"string\"},\"events\":{\"description\":\"A whitelist for the event(s) you intend to export. For multiple events, you will need to pass in each event name as separate `events` parameters like so: `--data 'events=event1' \\\\ --data 'events=event2'`\\n\\n\\nAll events in the project will be exported if no events are\\nspecified.\\n\",\"type\":\"string\"},\"frequency\":{\"default\":\"daily\",\"description\":\"**Default**: `daily`\\n\\n**frequency** can be either `hourly` or `daily`. `hourly` exports the data every hour. `daily` exports the data at midnight (based on the projects timezone). **frequency** should only be passed if your export window is indefinite.\\n\",\"enum\":[\"daily\",\"hourly\"],\"type\":\"string\"},\"from_date\":{\"description\":\"The starting date of the export window. It is formatted as `YYYY-MM-DD` and cannot be more than six months in the past.\\n\\nIf **trial** is set to `true` this will default to the previous day; otherwise, it is a required parameter.\\n\",\"format\":\"date\",\"type\":\"string\"},\"gcs_bucket\":{\"description\":\"The GCS bucket to export the Mixpanel data to.\\n\",\"type\":\"string\"},\"gcs_prefix\":{\"description\":\"The GCS path prefix of the bucket.\\n\",\"type\":\"string\"},\"gcs_region\":{\"description\":\"The GCS region for the bucket.\\n\",\"enum\":[\"northamerica-northeast1\",\"us-central1\",\"us-east1\",\"us-east4\",\"us-west1\",\"us-west2\",\"southamerica-east1\",\"europe-north1\",\"europe-west1\",\"europe-west2\",\"europe-west3\",\"europe-west4\",\"europe-west6\",\"asia-east1\",\"asia-east2\",\"asia-northeast1\",\"asia-northeast2\",\"asia-northeast3\",\"asia-south1\",\"asia-southeast1\",\"australia-southeast1\"],\"type\":\"string\"},\"project_id\":{\"description\":\"Your project id (must be specified when using service account based authentication)\",\"type\":\"number\"},\"to_date\":{\"description\":\"The ending date of the export window. It is formatted as `YYYY-MM-DD`. The export will continue indefinitely if **to_date** is empty.\",\"format\":\"date\",\"type\":\"string\"},\"trial\":{\"default\":false,\"description\":\"**Default**: `false`\\n\\nA trial pipeline will be created if value is true.\\n\\nThe trial exports all of your events and user data for thirty calendar days, starting from one day before the API call was made. A trial pipeline has default values for the following parameters:\\n\\n**data_source**: `events`\\n**from_date**: `<defaults to previous day>`\\n**to_date**: `<no value>`\\n**frequency**: `daily`\\n**events**: `<no value>`\\n\",\"type\":\"boolean\"},\"type\":{\"default\":\"gcs-raw\",\"type\":\"string\"},\"where\":{\"description\":\"A selector expression used to filter by events data, such as event properties. Learn more about how to construct event selector expressions [here](/reference/segmentation-expressions).\",\"type\":\"string\"}},\"required\":[\"type\",\"from_date\",\"gcs_bucket\",\"gcs_region\"],\"title\":\"Raw GCS Pipeline\",\"type\":\"object\"},{\"properties\":{\"data_format\":{\"default\":\"json\",\"description\":\"**Default**: `json`\\n\\nThe file format of the exported data. **data_format** for this pipeline type can be only `json` .\\n\",\"enum\":[\"json\"],\"type\":\"string\"},\"data_source\":{\"default\":\"events\",\"description\":\"**Default**: `events`\\n\\n**data_source** In this type of pipeline it can only be `events` which exports Mixpanel event data.\\n\",\"enum\":[\"events\"],\"type\":\"string\"},\"events\":{\"description\":\"A whitelist for the event(s) you intend to export. For multiple events, you will need to pass in each event name as separate `events` parameters like so: `--data 'events=event1' \\\\ --data 'events=event2'`\\n\\n\\nAll events in the project will be exported if no events are\\nspecified.\\n\",\"type\":\"string\"},\"frequency\":{\"default\":\"daily\",\"description\":\"**Default**: `daily`\\n\\n**frequency** can be either `hourly` or `daily`. `hourly` exports the data every hour. `daily` exports the data at midnight (based on the projects timezone). **frequency** should only be passed if your export window is indefinite.\\n\",\"enum\":[\"daily\",\"hourly\"],\"type\":\"string\"},\"from_date\":{\"description\":\"The starting date of the export window. It is formatted as `YYYY-MM-DD` and cannot be more than six months in the past.\\n\\nIf **trial** is set to `true` this will default to the previous day; otherwise, it is a required parameter.\\n\",\"format\":\"date\",\"type\":\"string\"},\"project_id\":{\"description\":\"Your project id (must be specified when using service account based authentication)\",\"type\":\"number\"},\"s3_bucket\":{\"description\":\"The S3 bucket to which the data needs to be exported.\",\"type\":\"string\"},\"s3_encryption\":{\"default\":\"none\",\"description\":\"At rest encryption used by the s3 bucket.\\n\",\"enum\":[\"none\",\"aes\",\"kms\"],\"type\":\"string\"},\"s3_kms_key_id\":{\"description\":\"There is no default value. If s3_encryption is set to kms, this can specify the custom key id you desire to use.\",\"type\":\"string\"},\"s3_prefix\":{\"description\":\"There is no default value. The path prefix for the export. e.g. example_custom_prefix\",\"type\":\"string\"},\"s3_region\":{\"description\":\"The valid S3 region for the bucket.\",\"enum\":[\"us-east-1\",\"us-east-2\",\"us-west-1\",\"us-west-2\",\"ap-northeast-1\",\"ap-northeast-2\",\"ap-northeast-3\",\"ap-southeast-1\",\"ap-southeast-2\",\"ap-south-1\",\"ca-central-1\",\"cn-north-1\",\"cn-northwest-1\",\"eu-central-1\",\"eu-north-1\",\"eu-west-1\",\"eu-west-2\",\"eu-west-3\",\"sa-east-1\",\"me-south-1\"],\"type\":\"string\"},\"s3_role\":{\"description\":\"There is no default value. AWS Role the writer should assume when writing to s3 e.g. arn:aws:iam::<account-id>:role/example-s3-role\",\"type\":\"string\"},\"to_date\":{\"description\":\"The ending date of the export window. It is formatted as `YYYY-MM-DD`. The export will continue indefinitely if **to_date** is empty.\",\"format\":\"date\",\"type\":\"string\"},\"trial\":{\"default\":false,\"description\":\"**Default**: `false`\\n\\nA trial pipeline will be created if value is true.\\n\\nThe trial exports all of your events and user data for thirty calendar days, starting from one day before the API call was made. A trial pipeline has default values for the following parameters:\\n\\n**data_source**: `events`\\n\\n**from_date**: `<defaults to previous day>`\\n**to_date**: `<no value>`\\n**frequency**: `daily`\\n**events**: `<no value>`\\n\",\"type\":\"boolean\"},\"type\":{\"default\":\"s3-raw\",\"type\":\"string\"},\"where\":{\"description\":\"A selector expression used to filter by events data, such as event properties. Learn more about how to construct event selector expressions [here](/reference/segmentation-expressions).\",\"type\":\"string\"}},\"required\":[\"type\",\"from_date\",\"s3_bucket\",\"s3_region\",\"s3_role\"],\"title\":\"Raw Amazon S3 Pipeline\",\"type\":\"object\"},{\"properties\":{\"client_id\":{\"description\":\"`clientId` from the Service Principal credentials.\\n\",\"type\":\"string\"},\"client_secret\":{\"description\":\"`clientSecret` from the Service Principal credentials.\\n\",\"type\":\"string\"},\"container_name\":{\"description\":\"The Blob Container within the account where data will be exported.\",\"type\":\"string\"},\"data_format\":{\"default\":\"json\",\"description\":\"**Default**: `json`\\n\\nThe file format of the exported data. **data_format** for this pipeline type can be only `json` .\\n\",\"enum\":[\"json\"],\"type\":\"string\"},\"data_source\":{\"default\":\"events\",\"description\":\"**Default**: `events`\\n\\n**data_source** In this type of pipeline it is `events` which exports Mixpanel event data.\\n\",\"enum\":[\"events\"],\"type\":\"string\"},\"events\":{\"description\":\"A whitelist for the event(s) you intend to export. For multiple events, you will need to pass in each event name as separate `events` parameters like so: `--data 'events=event1' \\\\ --data 'events=event2'`\\n\\n\\nAll events in the project will be exported if no events are\\nspecified.\\n\",\"type\":\"string\"},\"frequency\":{\"default\":\"daily\",\"description\":\"**Default**: `daily`\\n\\n**frequency** can be either `hourly` or `daily`. `hourly` exports the data every hour. `daily` exports the data at midnight (based on the projects timezone). **frequency** should only be passed if your export window is indefinite.\\n\",\"enum\":[\"daily\",\"hourly\"],\"type\":\"string\"},\"from_date\":{\"description\":\"The starting date of the export window. It is formatted as `YYYY-MM-DD` and cannot be more than six months in the past.\\n\\nIf **trial** is set to `true` this will default to the previous day; otherwise, it is a required parameter.\\n\",\"format\":\"date\",\"type\":\"string\"},\"prefix\":{\"description\":\"A custom prefix for all the data being exported to the container.\",\"type\":\"string\"},\"project_id\":{\"description\":\"Your project id (must be specified when using service account based authentication)\",\"type\":\"number\"},\"storage_account\":{\"description\":\"Blob Storage Account where the data will be exported.\",\"type\":\"string\"},\"tenant_id\":{\"description\":\"`tenantId` from the Service Principal credentials. This is specific to the Active Directory instance where the Service Principal resides.\\n\",\"type\":\"string\"},\"to_date\":{\"description\":\"The ending date of the export window. It is formatted as `YYYY-MM-DD`. The export will continue indefinitely if **to_date** is empty.\",\"format\":\"date\",\"type\":\"string\"},\"trial\":{\"default\":false,\"description\":\"**Default**: `false`\\n\\nA trial pipeline will be created if value is true.\\n\\nThe trial exports all of your events and user data for thirty calendar days, starting from one day before the API call was made. A trial pipeline has default values for the following parameters:\\n\\n**data_source**: `events`\\n**from_date**: `<defaults to previous day>`\\n**to_date**: `<no value>`\\n**frequency**: `daily`\\n**events**: `<no value>`\\n\",\"type\":\"boolean\"},\"type\":{\"default\":\"azure-raw\",\"type\":\"string\"},\"where\":{\"description\":\"A selector expression used to filter by events data, such as event properties. Learn more about how to construct event selector expressions [here](/reference/segmentation-expressions).\",\"type\":\"string\"}},\"required\":[\"type\",\"from_date\",\"storage_account\",\"container_name\",\"client_id\",\"client_secret\",\"tenant_id\"],\"title\":\"Raw Azure Pipeline\",\"type\":\"object\"},{\"properties\":{\"bq_dataset_name\":{\"description\":\"Dataset created by the customer on their GCP project to which Mixpanel exports data.\",\"type\":\"string\"},\"bq_prefix\":{\"description\":\"The table prefix to be added to all the tables exported as part of the this pipeline. Only alphanumeric characters and underscores can be used.\",\"type\":\"string\"},\"bq_region\":{\"description\":\"The region used for BigQuery.\",\"enum\":[\"US\",\"US_CENTRAL_1\",\"US_EAST_1\",\"US_WEST_1\",\"US_WEST_2\",\"US_EAST_4\",\"NORTH_AMERICA_NORTHEAST_1\",\"SOUTH_AMERICA_EAST_1\",\"EU\",\"EUROPE_NORTH_1\",\"EUROPE_WEST_2\",\"EUROPE_WEST_3\",\"EUROPE_WEST_4\",\"EUROPE_WEST_6\",\"ASIA_SOUTH_1\",\"ASIA_EAST_1\",\"ASIA_EAST_2\",\"ASIA_NORTHEAST_1\",\"ASIA_NORTHEAST_2\",\"ASIA_NORTHEAST_3\",\"ASIA_SOUTHEAST_1\",\"ASIA_SOUTHEAST_2\",\"AUSTRALIA_SOUTHEAST_1\"],\"type\":\"string\"},\"data_source\":{\"default\":\"events\",\"description\":\"**Default**: `events`\\n\\n**data_source** can be either `events` or `people`. `events` exports Mixpanel event data. `people` exports Mixpanel user data.\\n\",\"enum\":[\"events\",\"people\"],\"type\":\"string\"},\"events\":{\"description\":\"A whitelist for the event(s) you intend to export. For multiple events, you will need to pass in each event name as separate `events` parameters like so: `--data 'events=event1' \\\\ --data 'events=event2'`\\n\\n\\nAll events in the project will be exported if no events are\\nspecified.\\n\",\"type\":\"string\"},\"frequency\":{\"default\":\"daily\",\"description\":\"**Default**: `daily`\\n\\n**frequency** can be either `hourly` or `daily`. `hourly` exports the data every hour. `daily` exports the data at midnight (based on the projects timezone). **frequency** should only be passed if your export window is indefinite.\\n\",\"enum\":[\"daily\",\"hourly\"],\"type\":\"string\"},\"from_date\":{\"description\":\"The starting date of the export window. It is formatted as `YYYY-MM-DD` and cannot be more than six months in the past.\\n\\nIf **trial** is set to `true` this will default to the previous day; otherwise, it is a required parameter.\\n\",\"format\":\"date\",\"type\":\"string\"},\"gcp_project\":{\"description\":\"Customer's GCP project ID where the BigQuery dataset is present.\",\"type\":\"string\"},\"project_id\":{\"description\":\"Your project id (must be specified when using service account based authentication)\",\"type\":\"number\"},\"schema_type\":{\"default\":\"monoschema\",\"description\":\"**Default**: `monoschema`\\n\\nAllowed options are `monoschema` and `multischema`. `monoschema` loads all events into a single table. `multischema` loads every event into its own dedicated table. All user data is exported as `monoschema`. This param is not supported for people data_source.\\n\",\"enum\":[\"monoschema\",\"multischema\"],\"type\":\"string\"},\"sync\":{\"default\":true,\"description\":\"A value of `true` updates exported data with any changes that occur in your Mixpanel dataset. These changes include deletions, late data, and imports that fall into your export window.\\n\",\"enum\":[true],\"type\":\"boolean\"},\"to_date\":{\"description\":\"The ending date of the export window. It is formatted as `YYYY-MM-DD`. The export will continue indefinitely if **to_date** is empty.\",\"format\":\"date\",\"type\":\"string\"},\"trial\":{\"default\":false,\"description\":\"**Default**: `false`\\n\\nA trial pipeline will be created if value is true.\\n\\nThe trial exports all of your events and user data for thirty calendar days, starting from one day before the API call was made. A trial pipeline has default values for the following parameters:\\n\\n**data_source**: `events and people`\\n**sync**: `false`\\n**from_date**: `<defaults to previous day>`\\n**to_date**: `<no value>`\\n**frequency**: `daily`\\n**events**: `<no value>`\\n\",\"type\":\"boolean\"},\"type\":{\"default\":\"bigquery\",\"type\":\"string\"},\"where\":{\"description\":\"A selector expression used to filter by events data, such as event properties. Learn more about how to construct event selector expressions [here](/reference/segmentation-expressions). This parameter is only valid when **data_source** is `events`.\",\"type\":\"string\"}},\"required\":[\"type\",\"from_date\",\"bq_region\",\"sync\",\"schema_type\",\"gcp_project\",\"bq_dataset_name\"],\"title\":\"Schematized BigQuery Pipeline\",\"type\":\"object\"},{\"properties\":{\"data_source\":{\"default\":\"events\",\"description\":\"**Default**: `events`\\n\\n**data_source** can be either `events` or `people`. `events` exports Mixpanel event data. `people` exports Mixpanel user data.\\n\",\"enum\":[\"events\",\"people\"],\"type\":\"string\"},\"events\":{\"description\":\"A whitelist for the event(s) you intend to export. For multiple events, you will need to pass in each event name as separate `events` parameters like so: `--data 'events=event1' \\\\ --data 'events=event2'`\\n\\n\\nAll events in the project will be exported if no events are\\nspecified.\\n\",\"type\":\"string\"},\"frequency\":{\"default\":\"daily\",\"description\":\"**Default**: `daily`\\n\\n**frequency** can be either `hourly` or `daily`. `hourly` exports the data every hour. `daily` exports the data at midnight (based on the projects timezone). **frequency** should only be passed if your export window is indefinite.\\n\",\"enum\":[\"daily\",\"hourly\"],\"type\":\"string\"},\"from_date\":{\"description\":\"The starting date of the export window. It is formatted as `YYYY-MM-DD` and cannot be more than six months in the past.\\n\\nIf **trial** is set to `true` this will default to the previous day; otherwise, it is a required parameter.\\n\",\"format\":\"date\",\"type\":\"string\"},\"project_id\":{\"description\":\"Your project id (must be specified when using service account based authentication)\",\"type\":\"number\"},\"schema_type\":{\"default\":\"monoschema\",\"description\":\"**Default**: `monoschema`\\n\\nAllowed options are `monoschema` and `multischema`. `monoschema` loads all events into a single table. `multischema` loads every event into its own dedicated table. All user data is exported as `monoschema`. This param is not supported for people data_source.\\n\",\"enum\":[\"monoschema\",\"multischema\"],\"type\":\"string\"},\"snowflake_account_name\":{\"description\":\"The Snowflake account identifier (e.g. myorg-myaccount).\",\"type\":\"string\"},\"snowflake_database\":{\"description\":\"The Snowflake database to export data into.\",\"type\":\"string\"},\"snowflake_password\":{\"description\":\"The password for the Snowflake user.\",\"type\":\"string\"},\"snowflake_prefix\":{\"description\":\"Prefix for created views and tables.\",\"type\":\"string\"},\"snowflake_role\":{\"description\":\"The Snowflake role to use.\",\"type\":\"string\"},\"snowflake_schema\":{\"description\":\"The Snowflake schema to export data into.\",\"type\":\"string\"},\"snowflake_storage_integration\":{\"description\":\"The name of the Snowflake storage integration for GCS staging.\",\"type\":\"string\"},\"snowflake_user\":{\"description\":\"The Snowflake user for authentication.\",\"type\":\"string\"},\"snowflake_warehouse\":{\"description\":\"The Snowflake warehouse to use for loading data.\",\"type\":\"string\"},\"sync\":{\"default\":true,\"description\":\"A value of `true` updates exported data with any changes that occur in your Mixpanel dataset. These changes include deletions, late data, and imports that fall into your export window.\\n\",\"enum\":[true],\"type\":\"boolean\"},\"to_date\":{\"description\":\"The ending date of the export window. It is formatted as `YYYY-MM-DD`. The export will continue indefinitely if **to_date** is empty.\",\"format\":\"date\",\"type\":\"string\"},\"trial\":{\"default\":false,\"description\":\"**Default**: `false`\\n\\nA trial pipeline will be created if value is true.\\n\\nThe trial exports all of your events and user data for thirty calendar days, starting from one day before the API call was made. A trial pipeline has default values for the following parameters:\\n\\n**data_source**: `events and people`\\n**sync**: `false`\\n**from_date**: `<defaults to previous day>`\\n**to_date**: `<no value>`\\n**frequency**: `daily`\\n**events**: `<no value>`\\n\",\"type\":\"boolean\"},\"type\":{\"default\":\"snowflake\",\"type\":\"string\"},\"where\":{\"description\":\"A selector expression used to filter by events data, such as event properties. Learn more about how to construct event selector expressions [here](/reference/segmentation-expressions). This parameter is only valid when **data_source** is `events`.\",\"type\":\"string\"}},\"required\":[\"type\",\"from_date\",\"sync\",\"schema_type\",\"snowflake_account_name\",\"snowflake_warehouse\",\"snowflake_storage_integration\",\"snowflake_user\",\"snowflake_password\",\"snowflake_role\",\"snowflake_database\",\"snowflake_schema\"],\"title\":\"Schematized Snowflake Pipeline\",\"type\":\"object\"},{\"properties\":{\"data_format\":{\"default\":\"json\",\"description\":\"**Default**: `json`\\n\\nThe file format of the exported data. **data_format** can be either `json` or `parquet`.\\n\",\"enum\":[\"json\",\"parquet\"],\"type\":\"string\"},\"data_source\":{\"default\":\"events\",\"description\":\"**Default**: `events`\\n\\n**data_source** can be either `events` or `people`. `events` exports Mixpanel event data. `people` exports Mixpanel user data.\\n\",\"enum\":[\"events\",\"people\"],\"type\":\"string\"},\"events\":{\"description\":\"A whitelist for the event(s) you intend to export. For multiple events, you will need to pass in each event name as separate `events` parameters like so: `--data 'events=event1' \\\\ --data 'events=event2'`\\n\\n\\nAll events in the project will be exported if no events are\\nspecified.\\n\",\"type\":\"string\"},\"frequency\":{\"default\":\"daily\",\"description\":\"**Default**: `daily`\\n\\n**frequency** can be either `hourly` or `daily`. `hourly` exports the data every hour. `daily` exports the data at midnight (based on the projects timezone). **frequency** should only be passed if your export window is indefinite.\\n\",\"enum\":[\"daily\",\"hourly\"],\"type\":\"string\"},\"from_date\":{\"description\":\"The starting date of the export window. It is formatted as `YYYY-MM-DD` and cannot be more than six months in the past.\\n\\nIf **trial** is set to `true` this will default to the previous day; otherwise, it is a required parameter.\\n\",\"format\":\"date\",\"type\":\"string\"},\"glue_database\":{\"description\":\"Required if **use_glue** is `true`.\\n\\nThe glue database to which the schema needs to be exported.\\n\",\"type\":\"string\"},\"glue_role\":{\"description\":\"Required if **use_glue** is `true`. e.g. arn:aws:iam::<account-id>:role/example-glue-role\\n\\nThere is no default value. The role that needs to be assumed for updating glue.\\n\",\"type\":\"string\"},\"glue_table_prefix\":{\"description\":\"There is no default value. Prefix to add to table names when creating them.\",\"type\":\"string\"},\"project_id\":{\"description\":\"Your project id (must be specified when using service account based authentication)\",\"type\":\"number\"},\"s3_bucket\":{\"description\":\"The S3 bucket to which the data needs to be exported.\",\"type\":\"string\"},\"s3_encryption\":{\"default\":\"none\",\"description\":\"At rest encryption used by the s3 bucket.\\n\",\"enum\":[\"none\",\"aes\",\"kms\"],\"type\":\"string\"},\"s3_kms_key_id\":{\"description\":\"There is no default value. If s3_encryption is set to kms, this can specify the custom key id you desire to use.\",\"type\":\"string\"},\"s3_prefix\":{\"description\":\"There is no default value. The path prefix for the export.\",\"type\":\"string\"},\"s3_region\":{\"description\":\"The valid S3 region for the bucket.\",\"enum\":[\"us-east-1\",\"us-east-2\",\"us-west-1\",\"us-west-2\",\"ap-northeast-1\",\"ap-northeast-2\",\"ap-northeast-3\",\"ap-southeast-1\",\"ap-southeast-2\",\"ap-south-1\",\"ca-central-1\",\"cn-north-1\",\"cn-northwest-1\",\"eu-central-1\",\"eu-north-1\",\"eu-west-1\",\"eu-west-2\",\"eu-west-3\",\"sa-east-1\"],\"type\":\"string\"},\"s3_role\":{\"description\":\"There is no default value. AWS Role the writer should assume when writing to s3 e.g. arn:aws:iam::<account-id>:role/example-s3-role.\",\"type\":\"string\"},\"schema_type\":{\"default\":\"monoschema\",\"description\":\"**Default**: `monoschema`\\n\\nAllowed options are `monoschema` and `multischema`. `monoschema` loads all events into a single table. `multischema` loads every event into its own dedicated table. All user data is exported as `monoschema`. This param is not supported for people data_source.\\n\",\"enum\":[\"monoschema\",\"multischema\"],\"type\":\"string\"},\"sync\":{\"default\":true,\"description\":\"A value of `true` updates exported data with any changes that occur in your Mixpanel dataset. These changes include deletions, late data, and imports that fall into your export window.\\n\",\"enum\":[true],\"type\":\"boolean\"},\"to_date\":{\"description\":\"The ending date of the export window. It is formatted as `YYYY-MM-DD`. The export will continue indefinitely if **to_date** is empty.\",\"format\":\"date\",\"type\":\"string\"},\"trial\":{\"default\":false,\"description\":\"**Default**: `false`\\n\\nA trial pipeline will be created if value is true.\\n\\nThe trial exports all of your events and user data for thirty calendar days, starting from one day before the API call was made. A trial pipeline has default values for the following parameters:\\n\\n**data_source**: `events and people`\\n**sync**: `false`\\n**from_date**: `<defaults to previous day>`\\n**to_date**: `<no value>`\\n**frequency**: `daily`\\n**events**: `<no value>`\\n\",\"type\":\"boolean\"},\"type\":{\"default\":\"aws\",\"type\":\"string\"},\"use_glue\":{\"default\":false,\"description\":\"**Default**: `false`\\n\\nUse glue schema export.\\n\",\"type\":\"boolean\"},\"where\":{\"description\":\"A selector expression used to filter by events data, such as event properties. Learn more about how to construct event selector expressions [here](/reference/segmentation-expressions). This parameter is only valid when **data_source** is `events`.\",\"type\":\"string\"}},\"required\":[\"type\",\"from_date\",\"s3_bucket\",\"s3_region\",\"s3_role\",\"sync\",\"schema_type\"],\"title\":\"Schematized AWS Pipeline\",\"type\":\"object\"},{\"properties\":{\"client_id\":{\"description\":\"`clientId` from the Service Principal credentials.\\n\",\"type\":\"string\"},\"client_secret\":{\"description\":\"`clientSecret` from the Service Principal credentials.\\n\",\"type\":\"string\"},\"container_name\":{\"description\":\"The Blob Container within the account where data will be exported.\",\"type\":\"string\"},\"data_format\":{\"default\":\"json\",\"description\":\"**Default**: `json`\\n\\nThe file format of the exported data. **data_format** can be either `json` or `parquet`.\\n\",\"enum\":[\"json\",\"parquet\"],\"type\":\"string\"},\"data_source\":{\"default\":\"events\",\"description\":\"**Default**: `events`\\n\\n**data_source** can be either `events` or `people`. `events` exports Mixpanel event data. `people` exports Mixpanel user data.\\n\",\"enum\":[\"events\",\"people\"],\"type\":\"string\"},\"events\":{\"description\":\"A whitelist for the event(s) you intend to export. For multiple events, you will need to pass in each event name as separate `events` parameters like so: `--data 'events=event1' \\\\ --data 'events=event2'`\\n\\n\\nAll events in the project will be exported if no events are\\nspecified.\\n\",\"type\":\"string\"},\"frequency\":{\"default\":\"daily\",\"description\":\"**Default**: `daily`\\n\\n**frequency** can be either `hourly` or `daily`. `hourly` exports the data every hour. `daily` exports the data at midnight (based on the projects timezone). **frequency** should only be passed if your export window is indefinite.\\n\",\"enum\":[\"daily\",\"hourly\"],\"type\":\"string\"},\"from_date\":{\"description\":\"The starting date of the export window. It is formatted as `YYYY-MM-DD` and cannot be more than six months in the past.\\n\\nIf **trial** is set to `true` this will default to the previous day; otherwise, it is a required parameter.\\n\",\"format\":\"date\",\"type\":\"string\"},\"prefix\":{\"description\":\"A custom prefix for all the data being exported to the container.\",\"type\":\"string\"},\"project_id\":{\"description\":\"Your project id (must be specified when using service account based authentication)\",\"type\":\"number\"},\"schema_type\":{\"default\":\"monoschema\",\"description\":\"**Default**: `monoschema`\\n\\nAllowed options are `monoschema` and `multischema`. `monoschema` loads all events into a single table. `multischema` loads every event into its own dedicated table. All user data is exported as `monoschema`. This param is not supported for people data_source.\\n\",\"enum\":[\"monoschema\",\"multischema\"],\"type\":\"string\"},\"storage_account\":{\"description\":\"Blob Storage Account where the data will be exported.\",\"type\":\"string\"},\"sync\":{\"default\":true,\"description\":\"A value of `true` updates exported data with any changes that occur in your Mixpanel dataset. These changes include deletions, late data, and imports that fall into your export window.\\n\",\"enum\":[true],\"type\":\"boolean\"},\"tenant_id\":{\"description\":\"`tenantId` from the Service Principal credentials. This is specific to the Active Directory instance where the Service Principal resides.\\n\",\"type\":\"string\"},\"to_date\":{\"description\":\"The ending date of the export window. It is formatted as `YYYY-MM-DD`. The export will continue indefinitely if **to_date** is empty.\",\"format\":\"date\",\"type\":\"string\"},\"trial\":{\"default\":false,\"description\":\"**Default**: `false`\\n\\nA trial pipeline will be created if value is true.\\n\\nThe trial exports all of your events and user data for thirty calendar days, starting from one day before the API call was made. A trial pipeline has default values for the following parameters:\\n\\n**data_source**: `events and people`\\n**sync**: `false`\\n**from_date**: `<defaults to previous day>`\\n**to_date**: `<no value>`\\n**frequency**: `daily`\\n**events**: `<no value>`\\n\",\"type\":\"boolean\"},\"type\":{\"default\":\"azure-blob\",\"type\":\"string\"},\"where\":{\"description\":\"A selector expression used to filter by events data, such as event properties. Learn more about how to construct event selector expressions [here](/reference/segmentation-expressions). This parameter is only valid when **data_source** is `events`.\",\"type\":\"string\"}},\"required\":[\"type\",\"from_date\",\"storage_account\",\"container_name\",\"client_id\",\"client_secret\",\"tenant_id\",\"sync\",\"schema_type\"],\"title\":\"Schematized Azure Pipeline\",\"type\":\"object\"},{\"properties\":{\"data_format\":{\"default\":\"json\",\"description\":\"**Default**: `json` The file format of the exported data. **data_format** can be either `json` or `parquet`.\\n\",\"enum\":[\"json\",\"parquet\"],\"type\":\"string\"},\"data_source\":{\"default\":\"events\",\"description\":\"**Default**: `events` **data_source** can be either `events` or `people`. `events` exports Mixpanel event data. `people` exports Mixpanel user data.\\n\",\"enum\":[\"events\",\"people\"],\"type\":\"string\"},\"events\":{\"description\":\"A whitelist for the event(s) you intend to export. For multiple events, you will need to pass in each event name as separate `events` parameters like so: `--data 'events=event1' \\\\ --data 'events=event2'`\\n\\nAll events in the project will be exported if no events are\\nspecified.\\n\",\"type\":\"string\"},\"frequency\":{\"default\":\"daily\",\"description\":\"**Default**: `daily` **frequency** can be either `hourly` or `daily`. `hourly` exports the data every hour. `daily` exports the data at midnight (based on the projects timezone). **frequency** should only be passed if your export window is indefinite.\\n\",\"enum\":[\"daily\",\"hourly\"],\"type\":\"string\"},\"from_date\":{\"description\":\"The starting date of the export window. It is formatted as `YYYY-MM-DD` and cannot be more than six months in the past.\\n\\nIf **trial** is set to `true` this will default to the previous day; otherwise, it is a required parameter.\\n\",\"format\":\"date\",\"type\":\"string\"},\"gcs_bucket\":{\"description\":\"*Required if **type** is `gcs-schema`\\nThe GCS bucket to export the Mixpanel data to.\\n\",\"type\":\"string\"},\"gcs_prefix\":{\"description\":\"*Required if **type** is `gcs-schema`\\nThe GCS path prefix of the bucket.\\n\",\"type\":\"string\"},\"gcs_region\":{\"description\":\"*Required if **type** is `gcs-schema`\\nThe GCS region for the bucket.\\n\",\"enum\":[\"northamerica-northeast1\",\"us-central1\",\"us-east1\",\"us-east4\",\"us-west1\",\"us-west2\",\"southamerica-east1\",\"europe-north1\",\"europe-west1\",\"europe-west2\",\"europe-west3\",\"europe-west4\",\"europe-west6\",\"asia-east1\",\"asia-east2\",\"asia-northeast1\",\"asia-northeast2\",\"asia-northeast3\",\"asia-south1\",\"asia-southeast1\",\"australia-southeast1\"],\"type\":\"string\"},\"project_id\":{\"description\":\"Your project id (must be specified when using service account based authentication)\",\"type\":\"number\"},\"schema_type\":{\"default\":\"monoschema\",\"description\":\"**Default**: `monoschema` Allowed options are `monoschema` and `multischema`. `monoschema` loads all events into a single table. `multischema` loads every event into its own dedicated table. All user data is exported as `monoschema`. This param is not supported for people data_source.\\n\",\"enum\":[\"monoschema\",\"multischema\"],\"type\":\"string\"},\"sync\":{\"default\":true,\"description\":\"A value of `true` updates exported data with any changes that occur in your Mixpanel dataset. These changes include deletions, late data, and imports that fall into your export window.\\n\",\"enum\":[true],\"type\":\"boolean\"},\"to_date\":{\"description\":\"The ending date of the export window. It is formatted as `YYYY-MM-DD`. The export will continue indefinitely if **to_date** is empty.\",\"format\":\"date\",\"type\":\"string\"},\"trial\":{\"default\":false,\"description\":\"**Default**: `false` A trial pipeline will be created if value is true. The trial exports all of your events and user data for thirty calendar days, starting from one day before the API call was made. A trial pipeline has default values for the following parameters: **data_source**: `events and people` **sync**: `false` **from_date**: `<defaults to previous day>` **to_date**: `<no value>` **frequency**: `daily` **events**: `<no value>`\\n\",\"type\":\"boolean\"},\"type\":{\"default\":\"gcs-schema\",\"type\":\"string\"},\"where\":{\"description\":\"A selector expression used to filter by events data, such as event properties. Learn more about how to construct event selector expressions [here](/reference/segmentation-expressions). This parameter is only valid when **data_source** is `events`.\",\"type\":\"string\"}},\"required\":[\"type\",\"from_date\",\"gcs_bucket\",\"gcs_region\",\"sync\",\"schema_type\"],\"title\":\"Schematized GCS Pipeline\",\"type\":\"object\"}]}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"example\":{\"value\":{\"bigquery_dataset_name\":\"https://bigquery.cloud.google.com/dataset/mixpanel-prod-1:sample_dataset_name\",\"pipeline_names\":[\"trial-events-daily-bigquery-monoschema\",\"trial-people-daily-bigquery-monoschema\"]}}}}},\"description\":\"Returns the name of the pipeline created. Use the name of the pipeline to check the status of or cancel the pipeline.\"},\"400\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"type\":\"string\"},\"status\":{\"enum\":[\"error\"],\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"$ref\":\"#/responses/400/content/application~1json/schema/properties\"},\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"$ref\":\"#/responses/400/content/application~1json/schema/properties\"},\"type\":\"object\"}}},\"description\":\"Forbidden\"}},\"security\":[{\"ServiceAccount\":[]},{\"ProjectSecret\":[]}],\"securitySchemes\":{\"OAuthToken\":{\"description\":\"OAuth Token\",\"scheme\":\"bearer\",\"type\":\"http\"},\"ProjectSecret\":{\"description\":\"Project Secret\",\"scheme\":\"basic\",\"type\":\"http\"},\"ServiceAccount\":{\"description\":\"Service Account\",\"scheme\":\"basic\",\"type\":\"http\"}},\"securitySource\":\"definition\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
+                  "kind": "http",
+                  "method": "POST",
+                  "orig": "/nessie/pipeline/create",
+                  "segments": [
+                    {
+                      "lit": "nessie"
+                    },
+                    {
+                      "lit": "pipeline"
+                    },
+                    {
+                      "lit": "create"
+                    }
+                  ],
+                  "select": {},
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  }
+                }
+              ]
+            }
+          },
+          "relations": {
+            "ancestors": []
+          }
+        },
+        "delete_pipeline": {
+          "active": true,
+          "alias": {
+            "field": {}
+          },
+          "fields": [],
+          "name": "delete_pipeline",
+          "op": {
+            "create": {
+              "input": "data",
+              "name": "create",
+              "points": [
+                {
+                  "active": true,
+                  "args": {},
+                  "contract": {
+                    "id": "POST /nessie/pipeline/cancel",
+                    "json": "{\"operationId\":\"cancel-warehouse-pipeline\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/x-www-form-urlencoded\":{\"schema\":{\"properties\":{\"name\":{\"description\":\"The name that uniquely identifies the pipeline.\",\"type\":\"string\"},\"project_id\":{\"description\":\"Your project id (must be specified when using service account based authentication)\",\"type\":\"number\"}},\"required\":[\"name\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"type\":\"string\"},\"status\":{\"enum\":[\"error\"],\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"$ref\":\"#/responses/401/content/application~1json/schema/properties\"},\"type\":\"object\"}}},\"description\":\"Forbidden\"}},\"security\":[{\"ServiceAccount\":[]},{\"ProjectSecret\":[]}],\"securitySchemes\":{\"OAuthToken\":{\"description\":\"OAuth Token\",\"scheme\":\"bearer\",\"type\":\"http\"},\"ProjectSecret\":{\"description\":\"Project Secret\",\"scheme\":\"basic\",\"type\":\"http\"},\"ServiceAccount\":{\"description\":\"Service Account\",\"scheme\":\"basic\",\"type\":\"http\"}},\"securitySource\":\"definition\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
+                  "kind": "http",
+                  "method": "POST",
+                  "orig": "/nessie/pipeline/cancel",
+                  "segments": [
+                    {
+                      "lit": "nessie"
+                    },
+                    {
+                      "lit": "pipeline"
+                    },
+                    {
+                      "lit": "cancel"
+                    }
+                  ],
+                  "select": {},
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  }
+                }
+              ]
+            }
+          },
+          "relations": {
+            "ancestors": []
+          }
+        },
+        "edit": {
+          "active": true,
+          "alias": {
+            "field": {}
+          },
+          "fields": [],
+          "name": "edit",
+          "op": {
+            "create": {
+              "input": "data",
+              "name": "create",
+              "points": [
+                {
+                  "active": true,
+                  "args": {},
+                  "contract": {
+                    "id": "POST /nessie/pipeline/edit",
+                    "json": "{\"operationId\":\"edit-warehouse-pipeline\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/x-www-form-urlencoded\":{\"schema\":{\"oneOf\":[{\"properties\":{\"events\":{\"description\":\"A whitelist for the event(s) you intend to export. For multiple events, you will need to pass in each event name as separate `events` parameters like so: `--data 'events=event1' \\\\ --data 'events=event2'`\\n\\n\\nPlease note that after this update, the sync of older dates to your data warehouse\\n(if enabled) will only contain the new set of whitelisted events.\\n\",\"type\":\"string\"},\"name\":{\"description\":\"The name that uniquely identifies the pipeline.\",\"type\":\"string\"},\"project_id\":{\"description\":\"Your project id (must be specified when using service account based authentication)\",\"type\":\"number\"},\"where\":{\"description\":\"A selector expression used to filter by events data, such as event properties.\\n\\nPlease note that after this update, the sync of older dates to your data warehouse (if enabled) will only contain events matching your new where clause.\",\"type\":\"string\"}},\"required\":[\"name\"],\"title\":\"Raw GCS Pipeline\",\"type\":\"object\"},{\"properties\":{\"$ref\":\"#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/0/properties\"},\"required\":{\"$ref\":\"#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/0/required\"},\"title\":\"Raw Amazon S3 Pipeline\",\"type\":\"object\"},{\"allOf\":[{\"properties\":{\"$ref\":\"#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/0/properties\"},\"required\":{\"$ref\":\"#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/0/required\"},\"type\":\"object\"},{\"properties\":{\"azure_client_id\":{\"description\":\"`clientId` from the Service Principal credentials.\\n\",\"type\":\"string\"},\"azure_client_secret\":{\"description\":\"`clientSecret` from the Service Principal credentials.\\n\",\"type\":\"string\"},\"azure_tenant_id\":{\"description\":\"`tenantId` from the Service Principal credentials. This is specific to the Active Directory instance where the Service Principal resides.\\n\",\"type\":\"string\"}},\"type\":\"object\"}],\"title\":\"Raw Azure Pipeline\"},{\"allOf\":[{\"allOf\":[{\"properties\":{\"$ref\":\"#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/0/properties\"},\"required\":{\"$ref\":\"#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/0/required\"},\"type\":\"object\"}]},{\"properties\":{\"bq_share_with_group\":{\"description\":\"Group account email addresses to share the data-set with if managed by mixpanel. e.g. bq-access-alias@somecompany.com.\\n\\nPlease note that this will only add new shares and won't remove the old ones.\\n\",\"items\":{\"type\":\"string\"},\"type\":\"array\"}},\"type\":\"object\"}],\"title\":\"Schematized BigQuery Pipeline\"},{\"allOf\":{\"$ref\":\"#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/3/allOf/0/allOf\"},\"title\":\"Schematized Snowflake Pipeline\"},{\"allOf\":[{\"allOf\":{\"$ref\":\"#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/3/allOf/0/allOf\"}},{\"properties\":{\"glue_database\":{\"description\":\"The glue database to which the schema needs to be exported.\\n\",\"type\":\"string\"},\"glue_role\":{\"description\":\"There is no default value. The role that needs to be assumed for updating glue  e.g. arn:aws:iam::<account-id>:role/example-glue-role\\n\",\"type\":\"string\"},\"glue_table_prefix\":{\"description\":\"Prefix to add to table names when creating them.\\n\",\"type\":\"string\"}},\"type\":\"object\"}],\"title\":\"Schematized AWS Pipeline\"},{\"allOf\":[{\"allOf\":{\"$ref\":\"#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/3/allOf/0/allOf\"}},{\"properties\":{\"$ref\":\"#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/2/allOf/1/properties\"},\"type\":\"object\"}],\"title\":\"Schematized Azure Pipeline\"},{\"allOf\":{\"$ref\":\"#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/3/allOf/0/allOf\"},\"title\":\"Schematized GCS Pipeline\"}]}}},\"required\":true},\"responses\":{\"200\":{\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"type\":\"string\"},\"status\":{\"enum\":[\"error\"],\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"$ref\":\"#/responses/401/content/application~1json/schema/properties\"},\"type\":\"object\"}}},\"description\":\"Forbidden\"}},\"security\":[{\"ServiceAccount\":[]},{\"ProjectSecret\":[]}],\"securitySchemes\":{\"OAuthToken\":{\"description\":\"OAuth Token\",\"scheme\":\"bearer\",\"type\":\"http\"},\"ProjectSecret\":{\"description\":\"Project Secret\",\"scheme\":\"basic\",\"type\":\"http\"},\"ServiceAccount\":{\"description\":\"Service Account\",\"scheme\":\"basic\",\"type\":\"http\"}},\"securitySource\":\"definition\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
+                  "kind": "http",
+                  "method": "POST",
+                  "orig": "/nessie/pipeline/edit",
+                  "segments": [
+                    {
+                      "lit": "nessie"
+                    },
+                    {
+                      "lit": "pipeline"
+                    },
+                    {
+                      "lit": "edit"
+                    }
+                  ],
+                  "select": {},
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  }
+                }
+              ]
+            }
+          },
+          "relations": {
+            "ancestors": []
+          }
+        },
+        "pause": {
+          "active": true,
+          "alias": {
+            "field": {}
+          },
+          "fields": [],
+          "name": "pause",
+          "op": {
+            "create": {
+              "input": "data",
+              "name": "create",
+              "points": [
+                {
+                  "active": true,
+                  "args": {},
+                  "contract": {
+                    "id": "POST /nessie/pipeline/pause",
+                    "json": "{\"operationId\":\"pause-warehouse-pipeline\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/x-www-form-urlencoded\":{\"schema\":{\"properties\":{\"name\":{\"description\":\"The name that uniquely identifies the pipeline.\",\"type\":\"string\"},\"project_id\":{\"description\":\"Your project id (must be specified when using service account based authentication)\",\"type\":\"number\"}},\"required\":[\"name\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"type\":\"string\"},\"status\":{\"enum\":[\"error\"],\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"$ref\":\"#/responses/401/content/application~1json/schema/properties\"},\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"$ref\":\"#/responses/401/content/application~1json/schema/properties\"},\"type\":\"object\"}}},\"description\":\"Not Found\"}},\"security\":[{\"ServiceAccount\":[]},{\"ProjectSecret\":[]}],\"securitySchemes\":{\"OAuthToken\":{\"description\":\"OAuth Token\",\"scheme\":\"bearer\",\"type\":\"http\"},\"ProjectSecret\":{\"description\":\"Project Secret\",\"scheme\":\"basic\",\"type\":\"http\"},\"ServiceAccount\":{\"description\":\"Service Account\",\"scheme\":\"basic\",\"type\":\"http\"}},\"securitySource\":\"definition\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
+                  "kind": "http",
+                  "method": "POST",
+                  "orig": "/nessie/pipeline/pause",
+                  "segments": [
+                    {
+                      "lit": "nessie"
+                    },
+                    {
+                      "lit": "pipeline"
+                    },
+                    {
+                      "lit": "pause"
+                    }
+                  ],
+                  "select": {},
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  }
+                }
+              ]
+            }
+          },
+          "relations": {
+            "ancestors": []
+          }
+        },
+        "pipeline_status": {
+          "active": true,
+          "alias": {
+            "field": {}
+          },
+          "fields": [
+            {
+              "active": true,
+              "name": "canceled",
+              "req": false,
+              "type": "`$ARRAY`"
+            },
+            {
+              "active": true,
+              "name": "retried",
+              "req": false,
+              "type": "`$ARRAY`"
+            },
+            {
+              "active": true,
+              "name": "succeeded",
+              "req": false,
+              "type": "`$ARRAY`"
+            }
+          ],
+          "name": "pipeline_status",
+          "op": {
+            "list": {
+              "input": "data",
+              "name": "list",
+              "points": [
+                {
+                  "active": true,
+                  "args": {
+                    "query": [
+                      {
+                        "active": true,
+                        "kind": "query",
+                        "name": "name",
+                        "orig": "name",
+                        "reqd": true,
+                        "type": "`$STRING`"
+                      },
+                      {
+                        "active": true,
+                        "kind": "query",
+                        "name": "project_id",
+                        "orig": "project_id",
+                        "reqd": true,
+                        "type": "`$INTEGER`"
+                      },
+                      {
+                        "active": true,
+                        "kind": "query",
+                        "name": "status",
+                        "orig": "status",
+                        "reqd": false,
+                        "type": "`$ARRAY`"
+                      },
+                      {
+                        "active": true,
+                        "kind": "query",
+                        "name": "summary",
+                        "orig": "summary",
+                        "reqd": false,
+                        "type": "`$STRING`"
+                      }
+                    ]
+                  },
+                  "contract": {
+                    "id": "GET /nessie/pipeline/status",
+                    "json": "{\"operationId\":\"get-warehouse-pipeline-status\",\"parameters\":[{\"description\":\"Required if using service account to authenticate request.\",\"in\":\"query\",\"name\":\"project_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}},{\"description\":\"The name that uniquely identifies the pipeline.\",\"in\":\"query\",\"name\":\"name\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"Default: `false`. Only lists task count by status and no details.\",\"in\":\"query\",\"name\":\"summary\",\"schema\":{\"type\":\"string\"}},{\"description\":\"Filters the tasks by the given status. Valid options for status are `pending`, `running`, `retried`, `failed`, `canceled`, and `timed_out`.\\n\",\"in\":\"query\",\"name\":\"status\",\"schema\":{\"items\":{\"type\":\"string\"},\"type\":\"array\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"canceled\":{\"items\":{\"properties\":{\"from_date\":{\"type\":\"string\"},\"last_finish\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"project_id\":{\"description\":\"Your project id (must be specified when using service account based authentication)\",\"type\":\"number\"},\"run_at\":{\"type\":\"string\"},\"state\":{\"type\":\"string\"},\"to_date\":{\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},\"retried\":{\"items\":{\"properties\":{\"from_date\":{\"type\":\"string\"},\"last_finish\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"project_id\":{\"description\":\"Your project id (must be specified when using service account based authentication)\",\"type\":\"number\"},\"run_at\":{\"type\":\"string\"},\"state\":{\"type\":\"string\"},\"to_date\":{\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},\"succeeded\":{\"items\":{\"properties\":{\"from_date\":{\"$ref\":\"#/responses/200/content/application~1json/schema/properties/retried/items/properties/from_date\"},\"last_finish\":{\"$ref\":\"#/responses/200/content/application~1json/schema/properties/retried/items/properties/last_finish\"},\"name\":{\"$ref\":\"#/responses/200/content/application~1json/schema/properties/retried/items/properties/name\"},\"project_id\":{\"$ref\":\"#/responses/200/content/application~1json/schema/properties/retried/items/properties/project_id\"},\"run_at\":{\"$ref\":\"#/responses/200/content/application~1json/schema/properties/retried/items/properties/run_at\"},\"state\":{\"$ref\":\"#/responses/200/content/application~1json/schema/properties/retried/items/properties/state\"},\"to_date\":{\"$ref\":\"#/responses/200/content/application~1json/schema/properties/retried/items/properties/to_date\"}},\"type\":\"object\"},\"type\":\"array\"}},\"type\":\"object\"}}},\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"type\":\"string\"},\"status\":{\"enum\":[\"error\"],\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"$ref\":\"#/responses/401/content/application~1json/schema/properties\"},\"type\":\"object\"}}},\"description\":\"Forbidden\"}},\"security\":[{\"ServiceAccount\":[]},{\"ProjectSecret\":[]}],\"securitySchemes\":{\"OAuthToken\":{\"description\":\"OAuth Token\",\"scheme\":\"bearer\",\"type\":\"http\"},\"ProjectSecret\":{\"description\":\"Project Secret\",\"scheme\":\"basic\",\"type\":\"http\"},\"ServiceAccount\":{\"description\":\"Service Account\",\"scheme\":\"basic\",\"type\":\"http\"}},\"securitySource\":\"definition\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
+                  "kind": "http",
+                  "method": "GET",
+                  "orig": "/nessie/pipeline/status",
+                  "segments": [
+                    {
+                      "lit": "nessie"
+                    },
+                    {
+                      "lit": "pipeline"
+                    },
+                    {
+                      "lit": "status"
+                    }
+                  ],
+                  "select": {
+                    "exist": [
+                      "name",
+                      "project_id",
+                      "status",
+                      "summary"
+                    ]
+                  },
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  }
+                }
+              ]
+            }
+          },
+          "relations": {
+            "ancestors": []
+          }
+        },
+        "resume": {
+          "active": true,
+          "alias": {
+            "field": {}
+          },
+          "fields": [],
+          "name": "resume",
+          "op": {
+            "create": {
+              "input": "data",
+              "name": "create",
+              "points": [
+                {
+                  "active": true,
+                  "args": {},
+                  "contract": {
+                    "id": "POST /nessie/pipeline/resume",
+                    "json": "{\"operationId\":\"resume-warehouse-pipeline\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/x-www-form-urlencoded\":{\"schema\":{\"properties\":{\"name\":{\"description\":\"The name that uniquely identifies the pipeline.\",\"type\":\"string\"},\"project_id\":{\"description\":\"Your project id (must be specified when using service account based authentication)\",\"type\":\"number\"}},\"required\":[\"name\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"type\":\"string\"},\"status\":{\"enum\":[\"error\"],\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"$ref\":\"#/responses/401/content/application~1json/schema/properties\"},\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"$ref\":\"#/responses/401/content/application~1json/schema/properties\"},\"type\":\"object\"}}},\"description\":\"Not Found\"}},\"security\":[{\"ServiceAccount\":[]},{\"ProjectSecret\":[]}],\"securitySchemes\":{\"OAuthToken\":{\"description\":\"OAuth Token\",\"scheme\":\"bearer\",\"type\":\"http\"},\"ProjectSecret\":{\"description\":\"Project Secret\",\"scheme\":\"basic\",\"type\":\"http\"},\"ServiceAccount\":{\"description\":\"Service Account\",\"scheme\":\"basic\",\"type\":\"http\"}},\"securitySource\":\"definition\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
+                  "kind": "http",
+                  "method": "POST",
+                  "orig": "/nessie/pipeline/resume",
+                  "segments": [
+                    {
+                      "lit": "nessie"
+                    },
+                    {
+                      "lit": "pipeline"
+                    },
+                    {
+                      "lit": "resume"
+                    }
+                  ],
+                  "select": {},
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  }
+                }
+              ]
+            }
+          },
+          "relations": {
+            "ancestors": []
+          }
+        },
+        "retrieve_pipeline": {
+          "active": true,
+          "alias": {
+            "field": {}
+          },
+          "fields": [
+            {
+              "active": true,
+              "name": "9876543210",
+              "req": false,
+              "type": "`$ARRAY`"
+            },
+            {
+              "active": true,
+              "name": "day_syncs",
+              "req": false,
+              "type": "`$ARRAY`"
+            }
+          ],
+          "name": "retrieve_pipeline",
+          "op": {
+            "load": {
+              "input": "data",
+              "name": "load",
+              "points": [
+                {
+                  "active": true,
+                  "args": {
+                    "query": [
+                      {
+                        "active": true,
+                        "kind": "query",
+                        "name": "name",
+                        "orig": "name",
+                        "reqd": false,
+                        "type": "`$STRING`"
+                      },
+                      {
+                        "active": true,
+                        "kind": "query",
+                        "name": "project_id",
+                        "orig": "project_id",
+                        "reqd": true,
+                        "type": "`$INTEGER`"
+                      }
+                    ]
+                  },
+                  "contract": {
+                    "id": "GET /nessie/pipeline/timeline",
+                    "json": "{\"operationId\":\"list-warehouse-pipeline-sync-dates\",\"parameters\":[{\"description\":\"Required if using service account to authenticate request.\",\"in\":\"query\",\"name\":\"project_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}},{\"description\":\"The name that uniquely identifies the pipeline.\",\"in\":\"query\",\"name\":\"name\",\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"example\":{\"value\":{\"day_syncs\":[{\"date\":\"2019-08-19\",\"status\":\"synced\",\"sync_times\":[\"2019-08-19 14:27:46.044605 -0700 PDT\"]},{\"date\":\"2019-08-20\",\"status\":\"synced\",\"sync_times\":[\" 2019-08-20 14:33:09.315098 -0700 PDT\"]}]}}}}},\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"type\":\"string\"},\"status\":{\"enum\":[\"error\"],\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"$ref\":\"#/responses/401/content/application~1json/schema/properties\"},\"type\":\"object\"}}},\"description\":\"Forbidden\"}},\"security\":[{\"ServiceAccount\":[]},{\"ProjectSecret\":[]}],\"securitySchemes\":{\"OAuthToken\":{\"description\":\"OAuth Token\",\"scheme\":\"bearer\",\"type\":\"http\"},\"ProjectSecret\":{\"description\":\"Project Secret\",\"scheme\":\"basic\",\"type\":\"http\"},\"ServiceAccount\":{\"description\":\"Service Account\",\"scheme\":\"basic\",\"type\":\"http\"}},\"securitySource\":\"definition\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
+                  "kind": "http",
+                  "method": "GET",
+                  "orig": "/nessie/pipeline/timeline",
+                  "segments": [
+                    {
+                      "lit": "nessie"
+                    },
+                    {
+                      "lit": "pipeline"
+                    },
+                    {
+                      "lit": "timeline"
+                    }
+                  ],
+                  "select": {
+                    "exist": [
+                      "name",
+                      "project_id"
+                    ]
+                  },
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  }
+                },
+                {
+                  "active": true,
+                  "args": {
+                    "query": [
+                      {
+                        "active": true,
+                        "kind": "query",
+                        "name": "project_id",
+                        "orig": "project_id",
+                        "reqd": true,
+                        "type": "`$INTEGER`"
+                      }
+                    ]
+                  },
+                  "contract": {
+                    "id": "GET /nessie/pipeline/jobs",
+                    "json": "{\"operationId\":\"list-warehouse-pipeline-jobs\",\"parameters\":[{\"description\":\"Required if using service account to authenticate request.\",\"in\":\"query\",\"name\":\"project_id\",\"required\":true,\"schema\":{\"type\":\"integer\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"example\":{\"value\":{\"9876543210\":[{\"Dispatcher\":\"backfill\",\"frequency\":\"hourly\",\"last_dispatched\":\"2019-02-01 12:00:00 US/Pacific\",\"name\":\"events-daily-bigquery-monoschema\",\"sync_enabled\":\"true\"}]}}}}},\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"type\":\"string\"},\"status\":{\"enum\":[\"error\"],\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"$ref\":\"#/responses/401/content/application~1json/schema/properties\"},\"type\":\"object\"}}},\"description\":\"Forbidden\"}},\"security\":[{\"ServiceAccount\":[]},{\"ProjectSecret\":[]}],\"securitySchemes\":{\"OAuthToken\":{\"description\":\"OAuth Token\",\"scheme\":\"bearer\",\"type\":\"http\"},\"ProjectSecret\":{\"description\":\"Project Secret\",\"scheme\":\"basic\",\"type\":\"http\"},\"ServiceAccount\":{\"description\":\"Service Account\",\"scheme\":\"basic\",\"type\":\"http\"}},\"securitySource\":\"definition\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
+                  "kind": "http",
+                  "method": "GET",
+                  "orig": "/nessie/pipeline/jobs",
+                  "segments": [
+                    {
+                      "lit": "nessie"
+                    },
+                    {
+                      "lit": "pipeline"
+                    },
+                    {
+                      "lit": "jobs"
+                    }
+                  ],
+                  "select": {
+                    "exist": [
+                      "project_id"
+                    ]
+                  },
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  }
+                }
+              ]
+            }
+          },
+          "relations": {
+            "ancestors": []
+          }
+        }
+      },
+      "feature": {
+        "debug": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false,
+              "max": 100,
+              "redact": [
+                "authorization",
+                "cookie",
+                "set-cookie",
+                "api-key",
+                "apikey",
+                "x-api-key",
+                "idempotency-key"
+              ]
+            },
+            "optspec": {
+              "now": "`$FUNCTION`",
+              "onEntry": "`$FUNCTION`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreDone": {
+              "active": true,
+              "await": false
+            },
+            "PreRequest": {
+              "active": true,
+              "await": false
+            },
+            "PreResponse": {
+              "active": true,
+              "await": false
+            },
+            "PreResult": {
+              "active": false,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "PreUnexpected": {
+              "active": true,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "debug",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "js": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Request/response capture ring buffer for debugging",
+          "transport": "none",
+          "version": "0.0.1"
+        },
+        "idempotency": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false,
+              "header": "Idempotency-Key",
+              "methods": [
+                "POST",
+                "PUT",
+                "PATCH",
+                "DELETE"
+              ],
+              "ops": [
+                "create",
+                "update",
+                "remove"
+              ]
+            },
+            "optspec": {
+              "keygen": "`$FUNCTION`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreRequest": {
+              "active": true,
+              "await": false
+            },
+            "PreResponse": {
+              "active": false,
+              "await": false
+            },
+            "PreResult": {
+              "active": false,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "idempotency",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "js": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Idempotency keys for safe retries of mutating operations",
+          "transport": "none",
+          "version": "0.0.1"
+        },
+        "metrics": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false
+            },
+            "optspec": {
+              "now": "`$FUNCTION`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreDone": {
+              "active": true,
+              "await": false
+            },
+            "PrePoint": {
+              "active": true,
+              "await": false
+            },
+            "PreRequest": {
+              "active": false,
+              "await": false
+            },
+            "PreResponse": {
+              "active": false,
+              "await": false
+            },
+            "PreResult": {
+              "active": false,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "PreUnexpected": {
+              "active": true,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "metrics",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "js": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Statistics capture: per-operation counters and latency",
+          "transport": "none",
+          "version": "0.0.1"
+        },
+        "paging": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false,
+              "afterVar": "after",
+              "cursorParam": "cursor",
+              "firstVar": "first",
+              "limitParam": "limit",
+              "pageParam": "page",
+              "startPage": 1
+            },
+            "optspec": {
+              "limit": "`$NUMBER`",
+              "ops": "`$LIST`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreRequest": {
+              "active": true,
+              "await": false
+            },
+            "PreResponse": {
+              "active": false,
+              "await": false
+            },
+            "PreResult": {
+              "active": true,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "paging",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "js": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Pagination signals for list operations",
+          "transport": "none",
+          "version": "0.0.1"
+        },
+        "ratelimit": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false,
+              "burst": 5,
+              "rate": 5
+            },
+            "optspec": {
+              "now": "`$FUNCTION`",
+              "sleep": "`$FUNCTION`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreRequest": {
+              "active": false,
+              "await": false
+            },
+            "PreResponse": {
+              "active": false,
+              "await": false
+            },
+            "PreResult": {
+              "active": false,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "ratelimit",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "js": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Client-side rate limiting via a token bucket",
+          "transport": "wrap",
+          "version": "0.0.1"
+        },
+        "retry": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false,
+              "factor": 2,
+              "maxDelay": 2000,
+              "minDelay": 50,
+              "retries": 2,
+              "statuses": [
+                408,
+                425,
+                429,
+                500,
+                502,
+                503,
+                504
+              ]
+            },
+            "optspec": {
+              "jitter": "`$BOOLEAN`",
+              "sleep": "`$FUNCTION`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreRequest": {
+              "active": false,
+              "await": false
+            },
+            "PreResponse": {
+              "active": false,
+              "await": false
+            },
+            "PreResult": {
+              "active": false,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "retry",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "js": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Automatic retry of transient failures with exponential backoff",
+          "transport": "wrap",
+          "version": "0.0.1"
+        },
+        "test": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false
+            },
+            "optspec": {
+              "entity": "`$MAP`",
+              "net": "`$MAP`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": true,
+              "await": false
+            },
+            "GetMatch": {
+              "active": true,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": true,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": true,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PrePoint": {
+              "active": true,
+              "await": false
+            },
+            "PreRequest": {
+              "active": true,
+              "await": false
+            },
+            "PreResponse": {
+              "active": true,
+              "await": false
+            },
+            "PreResult": {
+              "active": true,
+              "await": false
+            },
+            "PreSpec": {
+              "active": true,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "SetData": {
+              "active": true,
+              "await": false
+            },
+            "SetMatch": {
+              "active": true,
+              "await": false
+            }
+          },
+          "name": "test",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "js": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "In-memory mock transport for testing without a live server",
+          "transport": "base",
+          "version": "0.0.1"
+        },
+        "timeout": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false,
+              "ms": 30000
+            },
+            "optspec": {
+              "clearTimer": "`$FUNCTION`",
+              "setTimer": "`$FUNCTION`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreRequest": {
+              "active": false,
+              "await": false
+            },
+            "PreResponse": {
+              "active": false,
+              "await": false
+            },
+            "PreResult": {
+              "active": false,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "timeout",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "js": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Per-request timeout with transport abort",
+          "transport": "wrap",
+          "version": "0.0.1"
+        }
+      },
+      "flow": {
+        "BasicCreateFlow": {
+          "active": true,
+          "entity": "create",
+          "key$": "BasicCreateFlow",
+          "kind": "basic",
+          "name": "BasicCreateFlow",
+          "param": {},
+          "step": [
+            {
+              "active": true,
+              "data": {},
+              "input": {
+                "ref": "create_ref01"
+              },
+              "match": {},
+              "op": "create",
+              "spec": [],
+              "valid": []
+            }
+          ]
+        },
+        "BasicDeletePipelineFlow": {
+          "active": true,
+          "entity": "delete_pipeline",
+          "key$": "BasicDeletePipelineFlow",
+          "kind": "basic",
+          "name": "BasicDeletePipelineFlow",
+          "param": {},
+          "step": [
+            {
+              "active": true,
+              "data": {},
+              "input": {
+                "ref": "delete_pipeline_ref01"
+              },
+              "match": {},
+              "op": "create",
+              "spec": [],
+              "valid": []
+            }
+          ]
+        },
+        "BasicEditFlow": {
+          "active": true,
+          "entity": "edit",
+          "key$": "BasicEditFlow",
+          "kind": "basic",
+          "name": "BasicEditFlow",
+          "param": {},
+          "step": [
+            {
+              "active": true,
+              "data": {},
+              "input": {
+                "ref": "edit_ref01"
+              },
+              "match": {},
+              "op": "create",
+              "spec": [],
+              "valid": []
+            }
+          ]
+        },
+        "BasicPauseFlow": {
+          "active": true,
+          "entity": "pause",
+          "key$": "BasicPauseFlow",
+          "kind": "basic",
+          "name": "BasicPauseFlow",
+          "param": {},
+          "step": [
+            {
+              "active": true,
+              "data": {},
+              "input": {
+                "ref": "pause_ref01"
+              },
+              "match": {},
+              "op": "create",
+              "spec": [],
+              "valid": []
+            }
+          ]
+        },
+        "BasicPipelineStatusFlow": {
+          "active": true,
+          "entity": "pipeline_status",
+          "key$": "BasicPipelineStatusFlow",
+          "kind": "basic",
+          "name": "BasicPipelineStatusFlow",
+          "param": {},
+          "step": [
+            {
+              "active": true,
+              "data": {},
+              "input": {},
+              "match": {},
+              "op": "list",
+              "spec": [],
+              "valid": [
+                {
+                  "apply": "ItemExists",
+                  "def": {
+                    "ref": "pipeline_status_ref01"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "BasicResumeFlow": {
+          "active": true,
+          "entity": "resume",
+          "key$": "BasicResumeFlow",
+          "kind": "basic",
+          "name": "BasicResumeFlow",
+          "param": {},
+          "step": [
+            {
+              "active": true,
+              "data": {},
+              "input": {
+                "ref": "resume_ref01"
+              },
+              "match": {},
+              "op": "create",
+              "spec": [],
+              "valid": []
+            }
+          ]
+        },
+        "BasicRetrievePipelineFlow": {
+          "active": true,
+          "entity": "retrieve_pipeline",
+          "key$": "BasicRetrievePipelineFlow",
+          "kind": "basic",
+          "name": "BasicRetrievePipelineFlow",
+          "param": {},
+          "step": [
+            {
+              "active": true,
+              "data": {},
+              "input": {
+                "ref": "retrieve_pipeline_ref01",
+                "srcdatavar": "retrieve_pipeline_ref01_data",
+                "suffix": "_dt0"
+              },
+              "match": {},
+              "op": "load",
+              "spec": [],
+              "valid": [
+                {
+                  "apply": "TextFieldMark",
+                  "def": {
+                    "mark": "Mark01-retrieve_pipeline_ref01"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "info": {
+        "contact": {
+          "url": "https://mixpanel.com/get-support"
+        },
+        "description": "Create and manage a continious pipeline with an external warehouse.",
+        "license": {
+          "name": "MIT",
+          "url": "https://opensource.org/licenses/MIT"
+        },
+        "security": {
+          "in": "header",
+          "name": "Authorization",
+          "prefix": "Basic",
+          "scheme": "ServiceAccount",
+          "type": "http"
+        },
+        "servers": [
+          {
+            "description": "Mixpanel's data export server.",
+            "url": "https://{server}.mixpanel.com/api/2.0",
+            "variables": {
+              "server": {
+                "default": "data",
+                "description": "The server location to be used:\n* `data` - The default (US) servers used for most projects\n* `data-eu` - EU servers if you are enrolled in EU Data Residency\n* `data-in` - India servers if you are enrolled in India Data Residency\n",
+                "enum": [
+                  "data",
+                  "data-eu",
+                  "data-in"
+                ]
+              }
+            }
+          }
+        ],
+        "summary": "Create and manage a continious pipeline with an external warehouse.",
+        "title": "Data Pipelines API",
+        "version": "1.0.0",
+        "website": "https://mixpanel.com/get-support"
+      },
+      "option": {},
+      "optspec": {
+        "allow": {
+          "method": "GET,PUT,POST,PATCH,DELETE,OPTIONS",
+          "op": "create,update,load,list,remove,command,direct,graphql"
+        },
+        "apikey": "",
+        "auth": {
+          "basic": false,
+          "in": "",
+          "name": "",
+          "prefix": ""
+        },
+        "base": "http://localhost:8000",
+        "clean": {
+          "keys": "key,token,id"
+        },
+        "entity": {
+          "`$CHILD`": {
+            "`$OPEN`": true,
+            "active": false,
+            "alias": {}
+          }
+        },
+        "extend": "`$ANY`",
+        "headers": {
+          "`$CHILD`": "`$STRING`"
+        },
+        "prefix": "",
+        "secret": "",
+        "server": {
+          "`$CHILD`": ""
+        },
+        "suffix": "",
+        "system": {
+          "fetch": "`$ANY`"
+        },
+        "test": {
+          "active": false,
+          "entity": {
+            "`$OPEN`": true
+          }
+        },
+        "utility": {}
+      },
+      "repo": {
+        "host": "github.com",
+        "path": ""
+      },
+      "target": {
+        "go": {
+          "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "comment": {
+            "line": "//"
+          },
+          "deps": {},
+          "ext": "go",
+          "feature": {
+            "fullset": [
+              "test/feature_test.go"
+            ],
+            "trim": true
+          },
+          "module": {
+            "goversion": "",
+            "name": "mixpanel-data-pipelines",
+            "package": "",
+            "path": ""
+          },
+          "name": "go",
+          "origname": "",
+          "output": {
+            "adopt": false,
+            "create": true,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
+          "package": "@voxgig/sdkgen",
+          "provides": {
+            "schema": true,
+            "sekreto": true
+          },
+          "publish": {
+            "registry": {
+              "active": false,
+              "name": "",
+              "package": "",
+              "state": "pending",
+              "url": "",
+              "vault": {
+                "alias": "",
+                "env": "",
+                "recipe": ""
+              }
+            },
+            "tag": {
+              "active": true,
+              "prefix": "",
+              "vault": {
+                "alias": "github",
+                "recipe": "github"
+              },
+              "via": "port"
+            },
+            "version": "0.0.1"
+          },
+          "srcfeature": false,
+          "superseded": [
+            "test/runner_test.go",
+            "test/struct_runner_test.go"
+          ],
+          "title": "Golang"
+        },
+        "go-cli": {
+          "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "comment": {
+            "line": "//"
+          },
+          "deps": {},
+          "ext": "go",
+          "feature": {
+            "fullset": [],
+            "trim": true
+          },
+          "module": {
+            "goversion": "",
+            "name": "mixpanel-data-pipelines",
+            "package": "",
+            "path": ""
+          },
+          "name": "go-cli",
+          "origname": "",
+          "output": {
+            "adopt": false,
+            "create": true,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
+          "package": "@voxgig/sdkgen",
+          "phase": {
+            "agentguide": {
+              "active": false
+            },
+            "entity": {
+              "active": false
+            },
+            "feature": {
+              "active": false
+            },
+            "readme": {
+              "active": false
+            },
+            "test": {
+              "active": false
+            }
+          },
+          "provides": {},
+          "publish": {
+            "registry": {
+              "active": false,
+              "name": "",
+              "package": "",
+              "state": "pending",
+              "url": "",
+              "vault": {
+                "alias": "",
+                "env": "",
+                "recipe": ""
+              }
+            },
+            "tag": {
+              "active": true,
+              "prefix": "",
+              "vault": {
+                "alias": "github",
+                "recipe": "github"
+              },
+              "via": "root"
+            },
+            "version": "0.0.1"
+          },
+          "superseded": [],
+          "title": "Go CLI"
+        },
+        "go-mcp": {
+          "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "comment": {
+            "line": "//"
+          },
+          "deps": {},
+          "ext": "go",
+          "feature": {
+            "fullset": [],
+            "trim": true
+          },
+          "module": {
+            "goversion": "",
+            "name": "mixpanel-data-pipelines",
+            "package": "",
+            "path": ""
+          },
+          "name": "go-mcp",
+          "origname": "",
+          "output": {
+            "adopt": false,
+            "create": true,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
+          "package": "@voxgig/sdkgen",
+          "phase": {
+            "agentguide": {
+              "active": false
+            },
+            "entity": {
+              "active": false
+            },
+            "feature": {
+              "active": false
+            },
+            "readme": {
+              "active": false
+            },
+            "test": {
+              "active": false
+            }
+          },
+          "provides": {},
+          "publish": {
+            "registry": {
+              "active": false,
+              "name": "",
+              "package": "",
+              "state": "pending",
+              "url": "",
+              "vault": {
+                "alias": "",
+                "env": "",
+                "recipe": ""
+              }
+            },
+            "tag": {
+              "active": true,
+              "prefix": "",
+              "vault": {
+                "alias": "github",
+                "recipe": "github"
+              },
+              "via": "root"
+            },
+            "version": "0.0.1"
+          },
+          "superseded": [],
+          "title": "Go MCP server"
+        },
+        "js": {
+          "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "comment": {
+            "line": "//"
+          },
+          "deps": {
+            "dotenv": {
+              "active": true,
+              "kind": "dev",
+              "version": "^17.4.2"
+            }
+          },
+          "ext": "js",
+          "feature": {
+            "fullset": [],
+            "trim": true
+          },
+          "module": {
+            "goversion": "",
+            "name": "mixpanel-data-pipelines",
+            "package": "",
+            "path": ""
+          },
+          "name": "js",
+          "origname": "",
+          "output": {
+            "adopt": false,
+            "create": true,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
+          "package": "@voxgig/sdkgen",
+          "provides": {
+            "schema": true,
+            "sekreto": true
+          },
+          "publish": {
+            "registry": {
+              "active": false,
+              "name": "npm",
+              "package": "",
+              "state": "pending",
+              "url": "https://registry.npmjs.org",
+              "vault": {
+                "alias": "npm",
+                "env": "",
+                "recipe": "npm"
+              }
+            },
+            "tag": {
+              "active": true,
+              "prefix": "",
+              "vault": {
+                "alias": "github",
+                "recipe": "github"
+              },
+              "via": "port"
+            },
+            "version": "0.0.1"
+          },
+          "superseded": [
+            "test/runner.js"
+          ],
+          "title": "JavaScript"
+        },
+        "lua": {
+          "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "comment": {
+            "line": "--"
+          },
+          "deps": {
+            "dkjson": {
+              "active": true,
+              "kind": "prod",
+              "version": "2.5"
+            }
+          },
+          "ext": "lua",
+          "feature": {
+            "fullset": [],
+            "trim": true
+          },
+          "module": {
+            "goversion": "",
+            "name": "mixpanel-data-pipelines",
+            "package": "",
+            "path": ""
+          },
+          "name": "lua",
+          "origname": "",
+          "output": {
+            "adopt": false,
+            "create": true,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
+          "package": "@voxgig/sdkgen",
+          "provides": {
+            "schema": true,
+            "sekreto": true
+          },
+          "publish": {
+            "registry": {
+              "active": false,
+              "name": "luarocks",
+              "package": "",
+              "state": "pending",
+              "url": "https://luarocks.org",
+              "vault": {
+                "alias": "luarocks",
+                "env": "LUAROCKS_API_KEY",
+                "recipe": ""
+              }
+            },
+            "tag": {
+              "active": true,
+              "prefix": "",
+              "vault": {
+                "alias": "github",
+                "recipe": "github"
+              },
+              "via": "port"
+            },
+            "version": "0.0.1"
+          },
+          "srcfeature": false,
+          "superseded": [
+            "test/struct_runner.lua"
+          ],
+          "title": "Lua"
+        },
+        "php": {
+          "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "comment": {
+            "line": "//"
+          },
+          "deps": {},
+          "ext": "php",
+          "feature": {
+            "fullset": [],
+            "trim": true
+          },
+          "module": {
+            "goversion": "",
+            "name": "mixpanel-data-pipelines",
+            "package": "",
+            "path": ""
+          },
+          "name": "php",
+          "origname": "",
+          "output": {
+            "adopt": false,
+            "create": true,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
+          "package": "@voxgig/sdkgen",
+          "provides": {
+            "schema": true,
+            "sekreto": true
+          },
+          "publish": {
+            "registry": {
+              "active": false,
+              "name": "packagist",
+              "package": "",
+              "state": "pending",
+              "url": "https://packagist.org",
+              "vault": {
+                "alias": "packagist",
+                "env": "PACKAGIST_API_TOKEN",
+                "recipe": ""
+              }
+            },
+            "tag": {
+              "active": true,
+              "prefix": "",
+              "vault": {
+                "alias": "github",
+                "recipe": "github"
+              },
+              "via": "port"
+            },
+            "version": "0.0.1"
+          },
+          "srcfeature": false,
+          "superseded": [
+            "test/StructRunner.php"
+          ],
+          "title": "PHP"
+        },
+        "py": {
+          "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "comment": {
+            "line": "#"
+          },
+          "deps": {
+            "requests": {
+              "active": true,
+              "kind": "prod",
+              "version": "2.33"
+            }
+          },
+          "ext": "py",
+          "feature": {
+            "fullset": [],
+            "trim": true
+          },
+          "module": {
+            "goversion": "",
+            "name": "mixpanel-data-pipelines",
+            "package": "",
+            "path": ""
+          },
+          "name": "py",
+          "origname": "",
+          "output": {
+            "adopt": false,
+            "create": true,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
+          "package": "@voxgig/sdkgen",
+          "provides": {
+            "schema": true,
+            "sekreto": true
+          },
+          "publish": {
+            "registry": {
+              "active": false,
+              "name": "pypi",
+              "package": "",
+              "state": "pending",
+              "url": "https://pypi.org",
+              "vault": {
+                "alias": "pypi",
+                "env": "",
+                "recipe": "pypi"
+              }
+            },
+            "tag": {
+              "active": true,
+              "prefix": "",
+              "vault": {
+                "alias": "github",
+                "recipe": "github"
+              },
+              "via": "port"
+            },
+            "version": "0.0.1"
+          },
+          "srcfeature": false,
+          "superseded": [
+            "test/struct_runner.py"
+          ],
+          "title": "Python"
+        },
+        "ts": {
+          "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "comment": {
+            "line": "//"
+          },
+          "deps": {
+            "@types/node": {
+              "active": true,
+              "kind": "dev",
+              "version": "^25.6.0"
+            },
+            "typescript": {
+              "active": true,
+              "kind": "dev",
+              "version": "^5.9.3"
+            }
+          },
+          "ext": "ts",
+          "feature": {
+            "fullset": [],
+            "trim": true
+          },
+          "module": {
+            "goversion": "",
+            "name": "mixpanel-data-pipelines",
+            "package": "",
+            "path": ""
+          },
+          "name": "ts",
+          "origname": "",
+          "output": {
+            "adopt": false,
+            "create": true,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
+          "package": "@voxgig/sdkgen",
+          "provides": {
+            "schema": true,
+            "sekreto": true
+          },
+          "publish": {
+            "registry": {
+              "active": false,
+              "name": "npm",
+              "package": "",
+              "state": "pending",
+              "url": "https://registry.npmjs.org",
+              "vault": {
+                "alias": "npm",
+                "env": "",
+                "recipe": "npm"
+              }
+            },
+            "tag": {
+              "active": true,
+              "prefix": "",
+              "vault": {
+                "alias": "github",
+                "recipe": "github"
+              },
+              "via": "port"
+            },
+            "version": "0.0.1"
+          },
+          "superseded": [
+            "test/runner.ts",
+            "test/vendor/omni/compat.ts",
+            "src/feature/secrets/sekreto/Providers.ts",
+            "src/feature/secrets/sekreto/Sigv4.ts",
+            "src/feature/secrets/sekreto/provider/Registry.ts",
+            "src/feature/secrets/sekreto/provider/http.ts"
+          ],
+          "title": "TypeScript"
+        }
+      },
+      "test": {
+        "live": {
+          "app": false,
+          "base": "",
+          "strict": true
+        }
+      }
+    }
+  },
+  "name": "mixpanel-data-pipelines",
+  "name-": "mixpanel-data-pipelines",
+  "name_": "mixpanel_data_pipelines",
+  "name__orig": "mixpanel-data-pipelines",
+  "origin": "voxgig-sdk"
+}

@@ -1,0 +1,18 @@
+# BasicResumeFlow
+
+main: kit: flow: BasicResumeFlow:
+{
+  entity: "resume",
+  kind: "basic",
+  name: "BasicResumeFlow",
+  step: [
+    {
+      input: {
+        ref: "resume_ref01"
+      }
+
+      op: "create"
+    }
+  ],
+  "key$": "BasicResumeFlow"
+}

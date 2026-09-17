@@ -1,0 +1,257 @@
+{
+  "existing": {
+    "edit": {
+      "EDIT00": {
+        "id": "EDIT00"
+      },
+      "EDIT01": {
+        "id": "EDIT01"
+      },
+      "EDIT02": {
+        "id": "EDIT02"
+      }
+    }
+  },
+  "new": {
+    "edit": {
+      "edit_ref01": {}
+    }
+  },
+  "requests": {
+    "POST /nessie/pipeline/edit": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "edit-warehouse-pipeline",
+        "parameters": [],
+        "protocol": "http",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "properties": {
+                      "events": {
+                        "description": "A whitelist for the event(s) you intend to export. For multiple events, you will need to pass in each event name as separate `events` parameters like so: `--data 'events=event1' \\ --data 'events=event2'`\n\n\nPlease note that after this update, the sync of older dates to your data warehouse\n(if enabled) will only contain the new set of whitelisted events.\n",
+                        "type": "string"
+                      },
+                      "name": {
+                        "description": "The name that uniquely identifies the pipeline.",
+                        "type": "string"
+                      },
+                      "project_id": {
+                        "description": "Your project id (must be specified when using service account based authentication)",
+                        "type": "number"
+                      },
+                      "where": {
+                        "description": "A selector expression used to filter by events data, such as event properties.\n\nPlease note that after this update, the sync of older dates to your data warehouse (if enabled) will only contain events matching your new where clause.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ],
+                    "title": "Raw GCS Pipeline",
+                    "type": "object"
+                  },
+                  {
+                    "properties": {
+                      "$ref": "#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/0/properties"
+                    },
+                    "required": {
+                      "$ref": "#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/0/required"
+                    },
+                    "title": "Raw Amazon S3 Pipeline",
+                    "type": "object"
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "properties": {
+                          "$ref": "#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/0/properties"
+                        },
+                        "required": {
+                          "$ref": "#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/0/required"
+                        },
+                        "type": "object"
+                      },
+                      {
+                        "properties": {
+                          "azure_client_id": {
+                            "description": "`clientId` from the Service Principal credentials.\n",
+                            "type": "string"
+                          },
+                          "azure_client_secret": {
+                            "description": "`clientSecret` from the Service Principal credentials.\n",
+                            "type": "string"
+                          },
+                          "azure_tenant_id": {
+                            "description": "`tenantId` from the Service Principal credentials. This is specific to the Active Directory instance where the Service Principal resides.\n",
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    ],
+                    "title": "Raw Azure Pipeline"
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "allOf": [
+                          {
+                            "properties": {
+                              "$ref": "#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/0/properties"
+                            },
+                            "required": {
+                              "$ref": "#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/0/required"
+                            },
+                            "type": "object"
+                          }
+                        ]
+                      },
+                      {
+                        "properties": {
+                          "bq_share_with_group": {
+                            "description": "Group account email addresses to share the data-set with if managed by mixpanel. e.g. bq-access-alias@somecompany.com.\n\nPlease note that this will only add new shares and won't remove the old ones.\n",
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    ],
+                    "title": "Schematized BigQuery Pipeline"
+                  },
+                  {
+                    "allOf": {
+                      "$ref": "#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/3/allOf/0/allOf"
+                    },
+                    "title": "Schematized Snowflake Pipeline"
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "allOf": {
+                          "$ref": "#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/3/allOf/0/allOf"
+                        }
+                      },
+                      {
+                        "properties": {
+                          "glue_database": {
+                            "description": "The glue database to which the schema needs to be exported.\n",
+                            "type": "string"
+                          },
+                          "glue_role": {
+                            "description": "There is no default value. The role that needs to be assumed for updating glue  e.g. arn:aws:iam::<account-id>:role/example-glue-role\n",
+                            "type": "string"
+                          },
+                          "glue_table_prefix": {
+                            "description": "Prefix to add to table names when creating them.\n",
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    ],
+                    "title": "Schematized AWS Pipeline"
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "allOf": {
+                          "$ref": "#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/3/allOf/0/allOf"
+                        }
+                      },
+                      {
+                        "properties": {
+                          "$ref": "#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/2/allOf/1/properties"
+                        },
+                        "type": "object"
+                      }
+                    ],
+                    "title": "Schematized Azure Pipeline"
+                  },
+                  {
+                    "allOf": {
+                      "$ref": "#/requestBody/content/application~1x-www-form-urlencoded/schema/oneOf/3/allOf/0/allOf"
+                    },
+                    "title": "Schematized GCS Pipeline"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "error"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "$ref": "#/responses/401/content/application~1json/schema/properties"
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "ServiceAccount": []
+          },
+          {
+            "ProjectSecret": []
+          }
+        ],
+        "securitySchemes": {
+          "OAuthToken": {
+            "description": "OAuth Token",
+            "scheme": "bearer",
+            "type": "http"
+          },
+          "ProjectSecret": {
+            "description": "Project Secret",
+            "scheme": "basic",
+            "type": "http"
+          },
+          "ServiceAccount": {
+            "description": "Service Account",
+            "scheme": "basic",
+            "type": "http"
+          }
+        },
+        "securitySource": "definition"
+      }
+    }
+  }
+}

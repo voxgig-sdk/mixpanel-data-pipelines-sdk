@@ -1,0 +1,9 @@
+# Flows
+
+@"./BasicCreateFlow.aon"
+@"./BasicDeletePipelineFlow.aon"
+@"./BasicEditFlow.aon"
+@"./BasicPauseFlow.aon"
+@"./BasicPipelineStatusFlow.aon"
+@"./BasicResumeFlow.aon"
+@"./BasicRetrievePipelineFlow.aon"

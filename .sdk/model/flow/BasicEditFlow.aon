@@ -1,0 +1,18 @@
+# BasicEditFlow
+
+main: kit: flow: BasicEditFlow:
+{
+  entity: "edit",
+  kind: "basic",
+  name: "BasicEditFlow",
+  step: [
+    {
+      input: {
+        ref: "edit_ref01"
+      }
+
+      op: "create"
+    }
+  ],
+  "key$": "BasicEditFlow"
+}

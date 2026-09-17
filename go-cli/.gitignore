@@ -1,0 +1,4 @@
+/dist/
+/mixpanel-data-pipelines-cli
+/go-cli
+.jostraca/

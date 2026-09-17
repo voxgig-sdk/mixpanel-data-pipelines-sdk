@@ -1,0 +1,18 @@
+# BasicDeletePipelineFlow
+
+main: kit: flow: BasicDeletePipelineFlow:
+{
+  entity: "delete_pipeline",
+  kind: "basic",
+  name: "BasicDeletePipelineFlow",
+  step: [
+    {
+      input: {
+        ref: "delete_pipeline_ref01"
+      }
+
+      op: "create"
+    }
+  ],
+  "key$": "BasicDeletePipelineFlow"
+}

@@ -1,0 +1,250 @@
+{
+  "existing": {
+    "retrieve_pipeline": {
+      "RETRIEVE_PIPELINE00": {
+        "9876543210": [],
+        "day_syncs": [],
+        "id": "RETRIEVE_PIPELINE00"
+      },
+      "RETRIEVE_PIPELINE01": {
+        "9876543210": [],
+        "day_syncs": [],
+        "id": "RETRIEVE_PIPELINE01"
+      },
+      "RETRIEVE_PIPELINE02": {
+        "9876543210": [],
+        "day_syncs": [],
+        "id": "RETRIEVE_PIPELINE02"
+      }
+    }
+  },
+  "new": {
+    "retrieve_pipeline": {
+      "retrieve_pipeline_ref01": {
+        "9876543210": [],
+        "day_syncs": []
+      }
+    }
+  },
+  "requests": {
+    "GET /nessie/pipeline/timeline": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "list-warehouse-pipeline-sync-dates",
+        "parameters": [
+          {
+            "description": "Required if using service account to authenticate request.",
+            "in": "query",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The name that uniquely identifies the pipeline.",
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "protocol": "http",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "example": {
+                    "value": {
+                      "day_syncs": [
+                        {
+                          "date": "2019-08-19",
+                          "status": "synced",
+                          "sync_times": [
+                            "2019-08-19 14:27:46.044605 -0700 PDT"
+                          ]
+                        },
+                        {
+                          "date": "2019-08-20",
+                          "status": "synced",
+                          "sync_times": [
+                            " 2019-08-20 14:33:09.315098 -0700 PDT"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "error"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "$ref": "#/responses/401/content/application~1json/schema/properties"
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "ServiceAccount": []
+          },
+          {
+            "ProjectSecret": []
+          }
+        ],
+        "securitySchemes": {
+          "OAuthToken": {
+            "description": "OAuth Token",
+            "scheme": "bearer",
+            "type": "http"
+          },
+          "ProjectSecret": {
+            "description": "Project Secret",
+            "scheme": "basic",
+            "type": "http"
+          },
+          "ServiceAccount": {
+            "description": "Service Account",
+            "scheme": "basic",
+            "type": "http"
+          }
+        },
+        "securitySource": "definition"
+      }
+    },
+    "GET /nessie/pipeline/jobs": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "list-warehouse-pipeline-jobs",
+        "parameters": [
+          {
+            "description": "Required if using service account to authenticate request.",
+            "in": "query",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "protocol": "http",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "example": {
+                    "value": {
+                      "9876543210": [
+                        {
+                          "Dispatcher": "backfill",
+                          "frequency": "hourly",
+                          "last_dispatched": "2019-02-01 12:00:00 US/Pacific",
+                          "name": "events-daily-bigquery-monoschema",
+                          "sync_enabled": "true"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "error"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "$ref": "#/responses/401/content/application~1json/schema/properties"
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "ServiceAccount": []
+          },
+          {
+            "ProjectSecret": []
+          }
+        ],
+        "securitySchemes": {
+          "OAuthToken": {
+            "description": "OAuth Token",
+            "scheme": "bearer",
+            "type": "http"
+          },
+          "ProjectSecret": {
+            "description": "Project Secret",
+            "scheme": "basic",
+            "type": "http"
+          },
+          "ServiceAccount": {
+            "description": "Service Account",
+            "scheme": "basic",
+            "type": "http"
+          }
+        },
+        "securitySource": "definition"
+      }
+    }
+  }
+}
